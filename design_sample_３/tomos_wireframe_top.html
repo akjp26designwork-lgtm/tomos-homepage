@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TOMOS セラピストスクール — ワイヤーフレーム</title>
+<style>
+/* ── Reset ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:#E8E5DF;font-family:'Helvetica Neue',Arial,sans-serif;padding:32px 24px 64px;color:#1a1a1a}
+
+/* ── Toggle UI ── */
+.vp-bar{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;gap:8px;background:#fff;border:1px solid #ccc;border-radius:24px;padding:5px 10px;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.vp-btn{font-size:12px;padding:4px 14px;border-radius:16px;border:none;cursor:pointer;background:transparent;color:#666}
+.vp-btn.on{background:#1a1a1a;color:#fff}
+
+/* ── Canvas ── */
+.canvas-wrap{display:flex;justify-content:center;padding-top:56px}
+.canvas{background:#F2EFE9;width:1440px;min-height:100vh;transition:width .35s ease;position:relative;overflow:hidden}
+.canvas.sp{width:390px}
+
+/* ── Wf base ── */
+.wf-label{font-size:10px;color:#999;letter-spacing:.06em;margin-bottom:6px;text-transform:uppercase}
+.ph{background:#D9D5CD;border-radius:3px}   /* placeholder block */
+.ph-dark{background:#C8C3B9;border-radius:3px}
+.ph-white{background:#fff;border-radius:3px;border:1px solid #D9D5CD}
+.ph-txt{background:#D9D5CD;border-radius:2px;height:10px}
+.ph-txt.short{width:55%}
+.ph-txt.med{width:75%}
+.ph-txt.long{width:100%}
+
+/* ── Section wrapper ── */
+.sec{padding:56px 80px;border-bottom:1px dashed #C0BAB0}
+.sec.narrow{padding:40px 80px}
+.sec-tag{display:inline-block;font-size:10px;background:#C8C3B9;color:#555;padding:3px 10px;border-radius:3px;margin-bottom:14px;letter-spacing:.06em}
+
+/* ── Header ── */
+.hdr{display:flex;align-items:center;justify-content:space-between;padding:0 80px;height:68px;background:#F2EFE9;border-bottom:1px solid #D9D5CD;position:sticky;top:0;z-index:100}
+.hdr-logo{display:flex;flex-direction:column;gap:3px}
+.hdr-logo-badge{width:100px;height:8px}.hdr-logo-name{width:160px;height:16px}
+.hdr-nav{display:flex;gap:28px}
+.hdr-nav-item{width:64px;height:10px}
+.hdr-right{display:flex;align-items:center;gap:16px}
+.hdr-tel{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+.hdr-tel span{width:100px;height:9px}.hdr-tel small{width:70px;height:7px}
+.btn-solid{height:36px;border-radius:4px;background:#1a1a1a;display:flex;align-items:center;justify-content:center;padding:0 16px;gap:0}
+.btn-solid span{width:100px;height:10px;background:#fff;border-radius:2px}
+
+/* ── Hero ── */
+.hero{display:grid;grid-template-columns:1fr 1fr;height:560px}
+.hero-left{background:#C8C3B9;display:flex;flex-direction:column;justify-content:center;padding:64px 72px;gap:20px}
+.hero-eyebrow{width:180px;height:8px}
+.hero-h1{display:flex;flex-direction:column;gap:10px}
+.hero-h1 span{height:36px;border-radius:3px}
+.hero-h1 span:nth-child(1){width:100%}.hero-h1 span:nth-child(2){width:80%}
+.hero-sub{display:flex;flex-direction:column;gap:6px}
+.hero-sub span{height:9px;border-radius:2px}
+.hero-sub span:nth-child(1){width:100%}.hero-sub span:nth-child(2){width:75%}
+.hero-btns{display:flex;gap:10px;margin-top:4px}
+.hero-btn-a{height:44px;width:160px;background:#1a1a1a;border-radius:4px}
+.hero-btn-b{height:44px;width:140px;border:1.5px solid #1a1a1a;border-radius:4px}
+.hero-badges{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
+.hero-badge{background:rgba(255,255,255,.25);border:1px solid rgba(255,255,255,.4);border-radius:6px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:5px}
+.hero-badge strong{width:44px;height:18px}.hero-badge small{width:52px;height:8px}
+.hero-right{background:#D9D5CD;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px}
+.hero-img-icon{width:64px;height:64px;border-radius:50%;background:#C0BAB0}
+.hero-img-lbl{width:140px;height:9px}
+
+/* ── Row layouts ── */
+.row-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.row-2{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+.row-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+
+/* ── Sec heading ── */
+.sec-head{display:flex;flex-direction:column;gap:8px;margin-bottom:36px}
+.sec-eyebrow{width:60px;height:8px}
+.sec-h2{display:flex;flex-direction:column;gap:8px}
+.sec-h2 span{height:28px;border-radius:3px}
+.sec-h2 span:nth-child(1){width:70%}.sec-h2 span:nth-child(2){width:50%}
+.sec-sub{display:flex;flex-direction:column;gap:5px;margin-top:4px}
+.sec-sub span{height:9px;border-radius:2px}
+.sec-sub span:nth-child(1){width:100%}.sec-sub span:nth-child(2){width:80%}
+
+/* ── Worry ── */
+.worry-card{background:#fff;border-radius:6px;padding:20px;display:flex;gap:14px;border:1px solid #D9D5CD}
+.worry-icon{width:36px;height:36px;min-width:36px;border-radius:50%;background:#D9D5CD}
+.worry-text{display:flex;flex-direction:column;gap:5px;flex:1}
+.worry-text p{height:9px;border-radius:2px}
+.worry-text p.long{width:100%}.worry-text p.short{width:65%}.worry-text p.accent{width:80%;background:#C0BAB0}
+
+/* ── Reason card ── */
+.reason-card{background:#fff;border-radius:6px;overflow:hidden;border:1px solid #D9D5CD}
+.reason-img{height:140px;background:#D9D5CD;display:flex;align-items:center;justify-content:center}
+.reason-img-ph{width:40px;height:40px;border-radius:50%;background:#C0BAB0}
+.reason-body{padding:20px;display:flex;flex-direction:column;gap:8px}
+.reason-num{width:60px;height:8px}
+.reason-ttl span{height:18px;display:block;border-radius:3px}
+.reason-ttl span:first-child{width:100%;margin-bottom:4px}.reason-ttl span:last-child{width:60%}
+.reason-desc{display:flex;flex-direction:column;gap:5px;margin-top:4px}
+.reason-desc span{height:8px;border-radius:2px}
+.reason-desc span:nth-child(1){width:100%}.reason-desc span:nth-child(2){width:100%}.reason-desc span:nth-child(3){width:75%}
+
+/* ── Course card ── */
+.course-card{background:#fff;border-radius:6px;overflow:hidden;border:1px solid #D9D5CD;display:flex;flex-direction:column}
+.course-tag-ph{width:80px;height:20px;border-radius:10px;background:#D9D5CD;margin:16px 16px 0}
+.course-body{padding:14px 16px 16px;flex:1;display:flex;flex-direction:column;gap:8px}
+.course-ttl span{height:20px;display:block;border-radius:3px;width:80%}
+.course-desc{display:flex;flex-direction:column;gap:5px;margin-top:2px}
+.course-desc span{height:8px;border-radius:2px}
+.course-desc span:nth-child(1){width:100%}.course-desc span:nth-child(2){width:100%}.course-desc span:nth-child(3){width:70%}
+.course-price{display:flex;gap:8px;align-items:baseline;margin-top:6px}
+.course-price .label{width:40px;height:8px}.course-price .val{width:80px;height:16px;border-radius:3px}
+.course-btn{height:36px;background:#D9D5CD;border-radius:4px;margin-top:8px}
+
+/* ── Voice card ── */
+.voice-card{background:#fff;border-radius:6px;padding:22px;border:1px solid #D9D5CD;position:relative}
+.voice-quote{width:28px;height:28px;background:#D9D5CD;border-radius:50%;position:absolute;top:16px;left:16px}
+.voice-tag-ph{width:60px;height:16px;border-radius:3px;background:#D9D5CD;margin-bottom:8px;margin-top:10px}
+.voice-text{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+.voice-text span{height:8px;border-radius:2px}
+.voice-text span:nth-child(1){width:100%}.voice-text span:nth-child(2){width:100%}.voice-text span:nth-child(3){width:80%}.voice-text span:nth-child(4){width:60%}
+.voice-person{display:flex;align-items:center;gap:10px;padding-top:14px;border-top:1px solid #D9D5CD}
+.voice-avatar{width:36px;height:36px;border-radius:50%;background:#D9D5CD;min-width:36px}
+.voice-info{display:flex;flex-direction:column;gap:4px}
+.voice-info p{width:80px;height:9px;border-radius:2px}.voice-info small{width:60px;height:7px;border-radius:2px;background:#C0BAB0}
+
+/* ── Instagram grid ── */
+.ig-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.ig-cell{aspect-ratio:1;background:#D9D5CD;border-radius:4px;display:flex;align-items:center;justify-content:center}
+.ig-cell-icon{width:24px;height:24px;background:#C0BAB0;border-radius:3px}
+.ig-btn{height:36px;border:1.5px solid #1a1a1a;border-radius:4px;display:flex;align-items:center;justify-content:center;margin-top:16px;gap:8px}
+.ig-btn span{width:120px;height:9px;border-radius:2px}
+
+/* ── Okinawa banner ── */
+.ok-banner{background:#C8C3B9;border-radius:6px;padding:40px;display:flex;gap:48px;align-items:center}
+.ok-text{flex:1;display:flex;flex-direction:column;gap:10px}
+.ok-text h3{height:24px;width:60%;border-radius:3px}.ok-text p{height:8px;width:100%;border-radius:2px}
+.ok-img{width:280px;height:160px;background:#B8B3A9;border-radius:6px;flex-shrink:0}
+
+/* ── FAQ ── */
+.faq-item{background:#fff;border-radius:6px;border:1px solid #D9D5CD;overflow:hidden;margin-bottom:8px}
+.faq-q{display:flex;align-items:center;gap:12px;padding:16px 20px}
+.faq-q-icon{width:24px;height:24px;border-radius:50%;background:#1a1a1a;flex-shrink:0}
+.faq-q-text{flex:1;height:10px;border-radius:2px}
+.faq-a{padding:0 20px 16px 56px;display:flex;flex-direction:column;gap:5px}
+.faq-a span{height:8px;border-radius:2px}
+.faq-a span:nth-child(1){width:100%}.faq-a span:nth-child(2){width:80%}
+
+/* ── Access ── */
+.access-map{height:280px;background:#D9D5CD;border-radius:6px;display:flex;align-items:center;justify-content:center}
+.access-map-icon{width:32px;height:40px;background:#C0BAB0;border-radius:4px}
+.access-info{display:flex;flex-direction:column;gap:16px}
+.access-row{display:flex;gap:12px}
+.access-label{width:56px;height:9px;flex-shrink:0;border-radius:2px;margin-top:1px}
+.access-val{display:flex;flex-direction:column;gap:5px;flex:1}
+.access-val span{height:9px;border-radius:2px}
+.access-val span:nth-child(1){width:100%}.access-val span:nth-child(2){width:70%}
+
+/* ── Final CTA ── */
+.final-cta{background:#C8C3B9;padding:72px 80px;text-align:center}
+.final-cta-inner{max-width:580px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:16px}
+.final-h2{display:flex;flex-direction:column;gap:8px;width:100%;align-items:center}
+.final-h2 span{height:32px;border-radius:3px}
+.final-h2 span:first-child{width:60%}
+.final-sub{display:flex;flex-direction:column;gap:5px;width:100%;align-items:center}
+.final-sub span{height:9px;border-radius:2px}
+.final-sub span:nth-child(1){width:90%}.final-sub span:nth-child(2){width:70%}
+.final-btns{display:flex;gap:12px;margin-top:8px}
+.final-btn-a{height:48px;width:180px;background:#1a1a1a;border-radius:4px}
+.final-btn-b{height:48px;width:160px;border:1.5px solid #1a1a1a;border-radius:4px}
+.final-btn-c{height:48px;width:120px;border:1.5px solid #1a1a1a;border-radius:4px}
+.final-tel{display:flex;flex-direction:column;gap:5px;align-items:center;margin-top:4px}
+.final-tel span{height:9px;border-radius:2px}
+.final-tel span:first-child{width:80px}.final-tel span:last-child{width:140px}
+
+/* ── Footer ── */
+.ftr{display:flex;align-items:center;justify-content:space-between;padding:28px 80px;background:#F2EFE9;border-top:1px solid #D9D5CD}
+.ftr-logo{width:120px;height:14px}
+.ftr-links{display:flex;gap:24px}
+.ftr-links span{width:80px;height:9px}
+.ftr-copy{width:180px;height:9px;background:#C0BAB0}
+
+/* ── SP Fixed CTA ── */
+.sp-cta-bar{background:#F2EFE9;border-top:1.5px solid #C8C3B9;padding:10px 16px;display:none}
+.sp-cta-row{display:flex;gap:8px;margin-bottom:6px}
+.sp-cta-line{flex:1;height:40px;background:#1a1a1a;border-radius:4px}
+.sp-cta-reserve{flex:1;height:40px;background:#D9D5CD;border-radius:4px}
+.sp-cta-tel{text-align:center;height:9px;background:#C0BAB0;width:140px;margin:0 auto;border-radius:2px}
+
+/* ── SP overrides ── */
+.canvas.sp .hdr{padding:0 16px;height:52px}
+.canvas.sp .hdr-nav,.canvas.sp .hdr-tel,.canvas.sp .btn-solid{display:none}
+.canvas.sp .hdr-menu{width:28px;height:20px;background:#D9D5CD;border-radius:2px}
+.canvas.sp .hero{grid-template-columns:1fr;height:auto}
+.canvas.sp .hero-right{display:none}
+.canvas.sp .hero-left{padding:40px 20px 36px}
+.canvas.sp .hero-h1 span{height:28px}
+.canvas.sp .hero-badges{grid-template-columns:repeat(2,1fr)}
+.canvas.sp .hero-btn-a,.canvas.sp .hero-btn-b{flex:1}
+.canvas.sp .sec{padding:44px 20px}
+.canvas.sp .sec.narrow{padding:32px 20px}
+.canvas.sp .row-3{grid-template-columns:1fr}
+.canvas.sp .row-2{grid-template-columns:1fr;gap:20px}
+.canvas.sp .row-4{grid-template-columns:repeat(2,1fr);gap:12px}
+.canvas.sp .ig-grid{grid-template-columns:repeat(3,1fr)}
+.canvas.sp .ok-banner{flex-direction:column;padding:28px 20px;gap:20px}
+.canvas.sp .ok-img{width:100%;height:140px}
+.canvas.sp .final-cta{padding:48px 20px}
+.canvas.sp .final-btns{flex-direction:column;width:100%}
+.canvas.sp .final-btn-a,.canvas.sp .final-btn-b,.canvas.sp .final-btn-c{width:100%;height:44px}
+.canvas.sp .ftr{flex-direction:column;gap:14px;padding:24px 20px;text-align:center}
+.canvas.sp .ftr-links{flex-wrap:wrap;justify-content:center;gap:12px}
+.canvas.sp .sp-cta-bar{display:block}
+</style>
+</head>
+<body>
+
+<div class="vp-bar">
+  <button class="vp-btn on" onclick="setVP('pc')">PC 1440px</button>
+  <button class="vp-btn" onclick="setVP('sp')">SP 390px</button>
+</div>
+
+<div class="canvas-wrap">
+<div class="canvas" id="canvas">
+
+  <!-- ── Header ── -->
+  <header class="hdr">
+    <div class="hdr-logo">
+      <div class="ph hdr-logo-badge"></div>
+      <div class="ph-dark hdr-logo-name"></div>
+    </div>
+    <nav class="hdr-nav">
+      <div class="ph hdr-nav-item"></div>
+      <div class="ph hdr-nav-item"></div>
+      <div class="ph hdr-nav-item"></div>
+      <div class="ph hdr-nav-item"></div>
+      <div class="ph hdr-nav-item"></div>
+    </nav>
+    <div class="hdr-right">
+      <div class="hdr-tel">
+        <span class="ph"></span>
+        <small class="ph"></small>
+      </div>
+      <div class="btn-solid"><span></span></div>
+    </div>
+    <div class="hdr-menu" style="display:none"></div>
+  </header>
+
+  <!-- ── 01 Hero ── -->
+  <section class="hero">
+    <div class="hero-left">
+      <div class="ph hero-eyebrow"></div>
+      <div class="hero-h1">
+        <span class="ph-dark"></span>
+        <span class="ph-dark"></span>
+      </div>
+      <div class="hero-sub">
+        <span class="ph"></span>
+        <span class="ph"></span>
+      </div>
+      <div class="hero-btns">
+        <div class="hero-btn-a"></div>
+        <div class="hero-btn-b"></div>
+      </div>
+      <div class="hero-badges">
+        <div class="hero-badge"><strong class="ph"></strong><small class="ph"></small></div>
+        <div class="hero-badge"><strong class="ph"></strong><small class="ph"></small></div>
+        <div class="hero-badge"><strong class="ph"></strong><small class="ph"></small></div>
+        <div class="hero-badge"><strong class="ph"></strong><small class="ph"></small></div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-img-icon"></div>
+      <div class="ph hero-img-lbl"></div>
+    </div>
+  </section>
+
+  <!-- ── 02 実績・信頼 ── -->
+  <section class="sec narrow" style="background:#D9D5CD">
+    <div class="sec-tag">実績・信頼</div>
+    <div class="row-4">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px;background:#fff;border-radius:6px">
+        <div class="ph" style="width:60px;height:28px;border-radius:4px"></div>
+        <div class="ph" style="width:80px;height:9px;border-radius:2px"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px;background:#fff;border-radius:6px">
+        <div class="ph" style="width:60px;height:28px;border-radius:4px"></div>
+        <div class="ph" style="width:80px;height:9px;border-radius:2px"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px;background:#fff;border-radius:6px">
+        <div class="ph" style="width:60px;height:28px;border-radius:4px"></div>
+        <div class="ph" style="width:80px;height:9px;border-radius:2px"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px;background:#fff;border-radius:6px">
+        <div class="ph" style="width:60px;height:28px;border-radius:4px"></div>
+        <div class="ph" style="width:80px;height:9px;border-radius:2px"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 03 悩みへの共感 ── -->
+  <section class="sec">
+    <div class="sec-tag">03 こんな悩みありませんか？</div>
+    <div class="sec-head">
+      <div class="ph sec-eyebrow"></div>
+      <div class="sec-h2"><span class="ph-dark"></span><span class="ph-dark"></span></div>
+      <div class="sec-sub"><span class="ph"></span><span class="ph"></span></div>
+    </div>
+    <div class="row-2">
+      <div class="worry-card">
+        <div class="worry-icon"></div>
+        <div class="worry-text">
+          <p class="ph long"></p><p class="ph med"></p>
+          <p class="ph accent short" style="margin-top:4px"></p>
+        </div>
+      </div>
+      <div class="worry-card">
+        <div class="worry-icon"></div>
+        <div class="worry-text">
+          <p class="ph long"></p><p class="ph med"></p>
+          <p class="ph accent short" style="margin-top:4px"></p>
+        </div>
+      </div>
+      <div class="worry-card">
+        <div class="worry-icon"></div>
+        <div class="worry-text">
+          <p class="ph long"></p><p class="ph med"></p>
+          <p class="ph accent short" style="margin-top:4px"></p>
+        </div>
+      </div>
+      <div class="worry-card">
+        <div class="worry-icon"></div>
+        <div class="worry-text">
+          <p class="ph long"></p><p class="ph med"></p>
+          <p class="ph accent short" style="margin-top:4px"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 04 他校との違い ── -->
+  <section class="sec" style="background:#D9D5CD">
+    <div class="sec-tag">04 他校との違い（比較表）</div>
+    <div class="sec-head">
+      <div class="ph sec-eyebrow"></div>
+      <div class="sec-h2"><span class="ph-dark"></span></div>
+    </div>
+    <!-- 比較表 -->
+    <div style="background:#fff;border-radius:6px;border:1px solid #C8C3B9;overflow:hidden">
+      <!-- ヘッダー行 -->
+      <div style="display:grid;grid-template-columns:1.2fr 1fr 1fr;background:#C8C3B9;padding:12px 20px;gap:20px">
+        <div class="ph" style="height:10px;width:80px"></div>
+        <div class="ph-dark" style="height:10px;width:80px"></div>
+        <div class="ph" style="height:10px;width:80px"></div>
+      </div>
+      <!-- データ行 × 4 -->
+      <div style="display:grid;grid-template-columns:1.2fr 1fr 1fr;padding:14px 20px;gap:20px;border-bottom:1px solid #D9D5CD">
+        <div class="ph" style="height:9px;width:70%"></div>
+        <div class="ph-dark" style="height:9px;width:80%"></div>
+        <div class="ph" style="height:9px;width:80%"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1.2fr 1fr 1fr;padding:14px 20px;gap:20px;border-bottom:1px solid #D9D5CD;background:#F2EFE9">
+        <div class="ph" style="height:9px;width:70%"></div>
+        <div class="ph-dark" style="height:9px;width:80%"></div>
+        <div class="ph" style="height:9px;width:80%"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1.2fr 1fr 1fr;padding:14px 20px;gap:20px;border-bottom:1px solid #D9D5CD">
+        <div class="ph" style="height:9px;width:70%"></div>
+        <div class="ph-dark" style="height:9px;width:80%"></div>
+        <div class="ph" style="height:9px;width:80%"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1.2fr 1fr 1fr;padding:14px 20px;gap:20px;background:#F2EFE9">
+        <div class="ph" style="height:9px;width:70%"></div>
+        <div class="ph-dark" style="height:9px;width:80%"></div>
+        <div class="ph" style="height:9px;width:80%"></div>
+      </div>
+    </div>
+    <!-- セクション内CTA -->
+    <div style="display:flex;justify-content:center;margin-top:24px">
+      <div style="height:40px;width:220px;border:1.5px solid #1a1a1a;border-radius:4px;display:flex;align-items:center;justify-content:center">
+        <div class="ph" style="width:140px;height:9px"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 05 理念・想い ── -->
+  <section class="sec">
+    <div class="sec-tag">05 スクール理念・想い</div>
+    <div class="row-2" style="align-items:center">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div class="sec-h2"><span class="ph-dark" style="width:80%"></span><span class="ph-dark" style="width:60%"></span></div>
+        <div class="sec-sub">
+          <span class="ph"></span><span class="ph"></span><span class="ph" style="width:60%"></span>
+        </div>
+        <div style="border-left:3px solid #C0BAB0;padding-left:16px;margin-top:8px;display:flex;flex-direction:column;gap:5px">
+          <span class="ph" style="height:9px;border-radius:2px;width:100%"></span>
+          <span class="ph" style="height:9px;border-radius:2px;width:90%"></span>
+          <span class="ph" style="height:9px;border-radius:2px;width:75%"></span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;margin-top:8px">
+          <div class="ph" style="width:48px;height:48px;border-radius:50%"></div>
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <div class="ph" style="width:80px;height:10px;border-radius:2px"></div>
+            <div class="ph" style="width:60px;height:8px;border-radius:2px"></div>
+          </div>
+        </div>
+      </div>
+      <div class="ph" style="height:280px;border-radius:6px"></div>
+    </div>
+  </section>
+
+  <!-- ── 06 講座紹介ティザー ── -->
+  <section class="sec" style="background:#D9D5CD">
+    <div class="sec-tag">06 講座紹介ティザー</div>
+    <div class="sec-head">
+      <div class="ph sec-eyebrow"></div>
+      <div class="sec-h2"><span class="ph-dark"></span></div>
+    </div>
+    <div class="row-3">
+      <div class="course-card">
+        <div class="course-tag-ph"></div>
+        <div class="course-body">
+          <div class="course-ttl"><span class="ph-dark"></span></div>
+          <div class="course-desc"><span class="ph"></span><span class="ph"></span><span class="ph"></span></div>
+          <div class="course-price"><div class="label ph"></div><div class="val ph-dark"></div></div>
+          <div class="course-btn"></div>
+        </div>
+      </div>
+      <div class="course-card">
+        <div class="course-tag-ph"></div>
+        <div class="course-body">
+          <div class="course-ttl"><span class="ph-dark"></span></div>
+          <div class="course-desc"><span class="ph"></span><span class="ph"></span><span class="ph"></span></div>
+          <div class="course-price"><div class="label ph"></div><div class="val ph-dark"></div></div>
+          <div class="course-btn"></div>
+        </div>
+      </div>
+      <div class="course-card">
+        <div class="course-tag-ph"></div>
+        <div class="course-body">
+          <div class="course-ttl"><span class="ph-dark"></span></div>
+          <div class="course-desc"><span class="ph"></span><span class="ph"></span><span class="ph"></span></div>
+          <div class="course-price"><div class="label ph"></div><div class="val ph-dark"></div></div>
+          <div class="course-btn"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 07 受講者の声 ── -->
+  <section class="sec">
+    <div class="sec-tag">07 受講者の声</div>
+    <div class="sec-head">
+      <div class="ph sec-eyebrow"></div>
+      <div class="sec-h2"><span class="ph-dark"></span></div>
+      <div class="sec-sub"><span class="ph"></span><span class="ph" style="width:65%"></span></div>
+    </div>
+    <div class="row-3">
+      <div class="voice-card">
+        <div class="voice-quote"></div>
+        <div class="voice-tag-ph"></div>
+        <div class="voice-text">
+          <span class="ph"></span><span class="ph"></span><span class="ph"></span><span class="ph"></span>
+        </div>
+        <div class="voice-person">
+          <div class="voice-avatar"></div>
+          <div class="voice-info"><p class="ph"></p><small class="ph"></small></div>
+        </div>
+      </div>
+      <div class="voice-card">
+        <div class="voice-quote"></div>
+        <div class="voice-tag-ph"></div>
+        <div class="voice-text">
+          <span class="ph"></span><span class="ph"></span><span class="ph"></span><span class="ph"></span>
+        </div>
+        <div class="voice-person">
+          <div class="voice-avatar"></div>
+          <div class="voice-info"><p class="ph"></p><small class="ph"></small></div>
+        </div>
+      </div>
+      <div class="voice-card">
+        <div class="voice-quote"></div>
+        <div class="voice-tag-ph"></div>
+        <div class="voice-text">
+          <span class="ph"></span><span class="ph"></span><span class="ph"></span><span class="ph"></span>
+        </div>
+        <div class="voice-person">
+          <div class="voice-avatar"></div>
+          <div class="voice-info"><p class="ph"></p><small class="ph"></small></div>
+        </div>
+      </div>
+    </div>
+    <!-- セクション内CTA -->
+    <div style="display:flex;justify-content:center;margin-top:24px">
+      <div style="height:40px;width:200px;border:1.5px solid #1a1a1a;border-radius:4px;display:flex;align-items:center;justify-content:center">
+        <div class="ph" style="width:120px;height:9px"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 08 Instagram ── -->
+  <section class="sec" style="background:#D9D5CD">
+    <div class="sec-tag">08 Instagram（厳選固定表示）</div>
+    <div class="sec-head">
+      <div class="ph sec-eyebrow"></div>
+      <div class="sec-h2"><span class="ph-dark"></span></div>
+      <div class="sec-sub"><span class="ph" style="width:60%"></span></div>
+    </div>
+    <div class="ig-grid">
+      <div class="ig-cell"><div class="ig-cell-icon"></div></div>
+      <div class="ig-cell"><div class="ig-cell-icon"></div></div>
+      <div class="ig-cell"><div class="ig-cell-icon"></div></div>
+      <div class="ig-cell"><div class="ig-cell-icon"></div></div>
+      <div class="ig-cell"><div class="ig-cell-icon"></div></div>
+      <div class="ig-cell"><div class="ig-cell-icon"></div></div>
+    </div>
+    <div class="ig-btn">
+      <div class="ph" style="width:16px;height:16px;border-radius:3px"></div>
+      <span class="ph"></span>
+    </div>
+  </section>
+
+  <!-- ── 09 沖縄発バナー ── -->
+  <section class="sec">
+    <div class="sec-tag">09「沖縄発」世界観バナー</div>
+    <div class="ok-banner">
+      <div class="ok-text">
+        <h3 class="ph-dark"></h3>
+        <div style="display:flex;flex-direction:column;gap:5px;margin-top:4px">
+          <p class="ph" style="height:9px"></p>
+          <p class="ph" style="height:9px"></p>
+          <p class="ph" style="height:9px;width:70%"></p>
+        </div>
+        <div style="display:flex;gap:16px;margin-top:16px">
+          <div class="ph" style="width:56px;height:9px;border-radius:2px"></div>
+          <div class="ph" style="width:56px;height:9px;border-radius:2px"></div>
+          <div class="ph" style="width:56px;height:9px;border-radius:2px"></div>
+        </div>
+      </div>
+      <div class="ok-img"></div>
+    </div>
+  </section>
+
+  <!-- ── 10 FAQ ── -->
+  <section class="sec" style="background:#D9D5CD">
+    <div class="sec-tag">10 よくある質問（FAQ）</div>
+    <div class="sec-head">
+      <div class="ph sec-eyebrow"></div>
+      <div class="sec-h2"><span class="ph-dark"></span></div>
+      <div class="sec-sub"><span class="ph"></span><span class="ph" style="width:55%"></span></div>
+    </div>
+    <div>
+      <div class="faq-item">
+        <div class="faq-q"><div class="faq-q-icon"></div><div class="ph faq-q-text"></div></div>
+        <div class="faq-a"><span class="ph"></span><span class="ph"></span></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><div class="faq-q-icon"></div><div class="ph faq-q-text"></div></div>
+        <div class="faq-a"><span class="ph"></span><span class="ph"></span></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><div class="faq-q-icon"></div><div class="ph faq-q-text"></div></div>
+        <div class="faq-a"><span class="ph"></span><span class="ph"></span></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><div class="faq-q-icon"></div><div class="ph faq-q-text"></div></div>
+        <div class="faq-a"><span class="ph"></span><span class="ph"></span></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><div class="faq-q-icon"></div><div class="ph faq-q-text"></div></div>
+        <div class="faq-a"><span class="ph"></span><span class="ph"></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 11 アクセス ── -->
+  <section class="sec">
+    <div class="sec-tag">11 アクセス・スクール概要</div>
+    <div class="sec-head">
+      <div class="ph sec-eyebrow"></div>
+      <div class="sec-h2"><span class="ph-dark"></span></div>
+    </div>
+    <div class="row-2">
+      <div class="access-map"><div class="access-map-icon"></div></div>
+      <div class="access-info">
+        <div class="access-row">
+          <div class="ph access-label"></div>
+          <div class="access-val"><span class="ph"></span></div>
+        </div>
+        <div class="access-row">
+          <div class="ph access-label"></div>
+          <div class="access-val"><span class="ph"></span><span class="ph"></span></div>
+        </div>
+        <div class="access-row">
+          <div class="ph access-label"></div>
+          <div class="access-val"><span class="ph"></span><span class="ph"></span></div>
+        </div>
+        <div class="access-row">
+          <div class="ph access-label"></div>
+          <div class="access-val"><span class="ph"></span><span class="ph"></span></div>
+        </div>
+        <div class="access-row">
+          <div class="ph access-label"></div>
+          <div class="access-val"><span class="ph"></span></div>
+        </div>
+        <!-- 受講形式タグ -->
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
+          <div class="ph" style="width:72px;height:28px;border-radius:14px"></div>
+          <div class="ph" style="width:88px;height:28px;border-radius:14px"></div>
+          <div class="ph" style="width:80px;height:28px;border-radius:14px"></div>
+        </div>
+        <div style="height:40px;width:180px;background:#1a1a1a;border-radius:4px;margin-top:8px"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 最終CTA ── -->
+  <div class="final-cta">
+    <div class="sec-tag" style="margin-bottom:20px">最終CTA</div>
+    <div class="final-cta-inner">
+      <div class="final-h2">
+        <span class="ph-dark"></span>
+      </div>
+      <div class="final-sub">
+        <span class="ph"></span><span class="ph"></span>
+      </div>
+      <div class="final-btns">
+        <div class="final-btn-a"></div>
+        <div class="final-btn-b"></div>
+        <div class="final-btn-c"></div>
+      </div>
+      <div class="final-tel">
+        <span class="ph"></span><span class="ph"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Footer ── -->
+  <footer class="ftr">
+    <div class="ph-dark ftr-logo"></div>
+    <div class="ftr-links">
+      <span class="ph"></span><span class="ph"></span><span class="ph"></span><span class="ph"></span><span class="ph"></span>
+    </div>
+    <div class="ftr-copy"></div>
+  </footer>
+
+  <!-- SP Fixed CTA -->
+  <div class="sp-cta-bar">
+    <div class="sp-cta-row">
+      <div class="sp-cta-line"></div>
+      <div class="sp-cta-reserve"></div>
+    </div>
+    <div class="sp-cta-tel"></div>
+  </div>
+
+</div><!-- /canvas -->
+</div><!-- /canvas-wrap -->
+
+<script>
+function setVP(mode){
+  const c=document.getElementById('canvas');
+  const btns=document.querySelectorAll('.vp-btn');
+  btns.forEach(b=>b.classList.remove('on'));
+  if(mode==='sp'){
+    c.classList.add('sp');
+    btns[1].classList.add('on');
+    document.querySelector('.hdr-menu').style.display='block';
+  } else {
+    c.classList.remove('sp');
+    btns[0].classList.add('on');
+    document.querySelector('.hdr-menu').style.display='none';
+  }
+}
+</script>
+</body>
+</html>

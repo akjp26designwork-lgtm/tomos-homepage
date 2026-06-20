@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TOMOS セラピストスクール</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:#F2EFE9;font-family:'Helvetica Neue',Arial,sans-serif;color:#1a1a1a}
+
+/* Placeholders */
+.ph{background:#D9D5CD;border-radius:3px}
+.ph-dark{background:#C8C3B9;border-radius:3px}
+
+/* Section */
+.sec{padding:56px 80px;border-bottom:1px dashed #C0BAB0}
+.sec.narrow{padding:40px 80px}
+.sec-tag{display:inline-block;font-size:10px;background:#C8C3B9;color:#555;padding:3px 10px;border-radius:3px;margin-bottom:14px;letter-spacing:.06em}
+
+/* Header */
+.hdr{display:flex;align-items:center;justify-content:space-between;padding:0 80px;height:68px;background:#F2EFE9;border-bottom:1px solid #D9D5CD;position:sticky;top:0;z-index:100}
+.hdr-logo{display:flex;flex-direction:column;gap:3px;text-decoration:none}
+.hdr-logo-badge{width:100px;height:8px}
+.hdr-logo-name{width:160px;height:16px}
+.hdr-nav{display:flex;gap:28px;align-items:center}
+.hdr-nav-item{width:64px;height:10px;display:block}
+.hdr-right{display:flex;align-items:center;gap:16px}
+.hdr-tel{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+.hdr-tel span{width:100px;height:9px;display:block}
+.hdr-tel small{width:70px;height:7px;display:block}
+.btn-solid{height:36px;border-radius:4px;background:#1a1a1a;display:flex;align-items:center;justify-content:center;padding:0 16px}
+.btn-solid span{width:100px;height:10px;background:#fff;border-radius:2px}
+.hdr-menu{display:none;flex-direction:column;justify-content:space-between;width:28px;height:20px;cursor:pointer;background:none;border:none;padding:2px 0}
+.hdr-menu span{display:block;width:100%;height:2px;background:#1a1a1a;border-radius:2px;transition:all .3s}
+
+/* Nav drawer */
+.nav-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:150}
+.nav-overlay.open{display:block}
+.nav-drawer{position:fixed;top:0;right:-300px;width:280px;height:100%;background:#F2EFE9;z-index:200;transition:right .3s ease;padding:72px 24px 24px;display:flex;flex-direction:column;gap:20px;border-left:1px solid #D9D5CD}
+.nav-drawer.open{right:0}
+.nav-drawer-close{position:absolute;top:20px;right:20px;width:28px;height:28px;border:none;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.nav-drawer-close::before,.nav-drawer-close::after{content:'';position:absolute;width:18px;height:2px;background:#1a1a1a;border-radius:2px}
+.nav-drawer-close::before{transform:rotate(45deg)}
+.nav-drawer-close::after{transform:rotate(-45deg)}
+.nav-drawer-item{height:10px;border-radius:2px;background:#D9D5CD;display:block}
+
+/* Hero */
+.hero{display:grid;grid-template-columns:1fr 1fr;height:560px}
+.hero-left{background:#C8C3B9;display:flex;flex-direction:column;justify-content:center;padding:64px 72px;gap:20px}
+.hero-eyebrow{width:180px;height:8px}
+.hero-h1{display:flex;flex-direction:column;gap:10px}
+.hero-h1 span{height:36px;border-radius:3px}
+.hero-h1 span:nth-child(1){width:100%}
+.hero-h1 span:nth-child(2){width:80%}
+.hero-sub{display:flex;flex-direction:column;gap:6px}
+.hero-sub span{height:9px;border-radius:2px}
+.hero-sub span:nth-child(1){width:100%}
+.hero-sub span:nth-child(2){width:75%}
+.hero-btns{display:flex;gap:10px;margin-top:4px}
+.hero-btn-a{height:44px;width:160px;background:#1a1a1a;border-radius:4px;flex-shrink:0}
+.hero-btn-b{height:44px;width:140px;border:1.5px solid #1a1a1a;border-radius:4px;flex-shrink:0}
+.hero-badges{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
+.hero-badge{background:rgba(255,255,255,.25);border:1px solid rgba(255,255,255,.4);border-radius:6px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:5px}
+.hero-badge strong{width:44px;height:18px;display:block}
+.hero-badge small{width:52px;height:8px;display:block}
+.hero-right{background:#D9D5CD;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px}
+.hero-img-icon{width:64px;height:64px;border-radius:50%;background:#C0BAB0}
+.hero-img-lbl{width:140px;height:9px}
+
+/* Grid layouts */
+.row-2{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+.row-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.row-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+
+/* Sec heading */
+.sec-head{display:flex;flex-direction:column;gap:8px;margin-bottom:36px}
+.sec-eyebrow{width:60px;height:8px}
+.sec-h2{display:flex;flex-direction:column;gap:8px}
+.sec-h2 span{height:28px;border-radius:3px}
+.sec-h2 span:nth-child(1){width:70%}
+.sec-h2 span:nth-child(2){width:50%}
+.sec-sub{display:flex;flex-direction:column;gap:5px;margin-top:4px}
+.sec-sub span{height:9px;border-radius:2px}
+.sec-sub span:nth-child(1){width:100%}
+.sec-sub span:nth-child(2){width:80%}
+
+/* Worry cards */
+.worry-card{background:#fff;border-radius:6px;padding:20px;display:flex;gap:14px;border:1px solid #D9D5CD}
+.worry-icon{width:36px;height:36px;min-width:36px;border-radius:50%;background:#D9D5CD}
+.worry-text{display:flex;flex-direction:column;gap:5px;flex:1}
+.worry-text p{height:9px;border-radius:2px}
+.worry-text p.long{width:100%}
+.worry-text p.short{width:65%}
+.worry-text p.accent{width:80%;background:#C0BAB0}
+
+/* Course cards */
+.course-card{background:#fff;border-radius:6px;overflow:hidden;border:1px solid #D9D5CD;display:flex;flex-direction:column}
+.course-tag-ph{width:80px;height:20px;border-radius:10px;background:#D9D5CD;margin:16px 16px 0}
+.course-body{padding:14px 16px 16px;flex:1;display:flex;flex-direction:column;gap:8px}
+.course-ttl span{height:20px;display:block;border-radius:3px;width:80%}
+.course-desc{display:flex;flex-direction:column;gap:5px;margin-top:2px}
+.course-desc span{height:8px;border-radius:2px}
+.course-desc span:nth-child(1){width:100%}
+.course-desc span:nth-child(2){width:100%}
+.course-desc span:nth-child(3){width:70%}
+.course-price{display:flex;gap:8px;align-items:baseline;margin-top:6px}
+.course-price .label{width:40px;height:8px}
+.course-price .val{width:80px;height:16px;border-radius:3px}
+.course-btn{height:36px;background:#D9D5CD;border-radius:4px;margin-top:8px;display:block}
+
+/* Voice cards */
+.voice-card{background:#fff;border-radius:6px;padding:22px;border:1px solid #D9D5CD;position:relative}
+.voice-quote{width:28px;height:28px;background:#D9D5CD;border-radius:50%;position:absolute;top:16px;left:16px}
+.voice-tag-ph{width:60px;height:16px;border-radius:3px;background:#D9D5CD;margin-bottom:8px;margin-top:10px}
+.voice-text{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+.voice-text span{height:8px;border-radius:2px}
+.voice-text span:nth-child(1){width:100%}
+.voice-text span:nth-child(2){width:100%}
+.voice-text span:nth-child(3){width:80%}
+.voice-text span:nth-child(4){width:60%}
+.voice-person{display:flex;align-items:center;gap:10px;padding-top:14px;border-top:1px solid #D9D5CD}
+.voice-avatar{width:36px;height:36px;border-radius:50%;background:#D9D5CD;min-width:36px}
+.voice-info{display:flex;flex-direction:column;gap:4px}
+.voice-info p{width:80px;height:9px;border-radius:2px}
+.voice-info small{width:60px;height:7px;border-radius:2px;background:#C0BAB0;display:block}
+
+/* Instagram */
+.ig-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.ig-cell{aspect-ratio:4/5;background:#D9D5CD;border-radius:4px;display:flex;align-items:center;justify-content:center}
+.ig-cell-icon{width:24px;height:24px;background:#C0BAB0;border-radius:3px}
+.ig-btn{height:36px;border:1.5px solid #1a1a1a;border-radius:4px;display:flex;align-items:center;justify-content:center;margin-top:16px;gap:8px}
+.ig-btn span{width:120px;height:9px;border-radius:2px}
+
+/* Okinawa banner */
+.ok-banner{background:#C8C3B9;border-radius:6px;padding:40px;display:flex;gap:48px;align-items:center}
+.ok-text{flex:1;display:flex;flex-direction:column;gap:10px}
+.ok-text h3{height:24px;width:60%;border-radius:3px}
+.ok-img{width:280px;height:160px;background:#B8B3A9;border-radius:6px;flex-shrink:0}
+
+/* FAQ */
+.faq-item{background:#fff;border-radius:6px;border:1px solid #D9D5CD;overflow:hidden;margin-bottom:8px}
+.faq-q{display:flex;align-items:center;gap:12px;padding:16px 20px;cursor:pointer;user-select:none}
+.faq-q-icon{width:24px;height:24px;border-radius:50%;background:#1a1a1a;flex-shrink:0}
+.faq-q-text{flex:1;height:10px;border-radius:2px}
+.faq-chev{width:16px;height:16px;border-radius:2px;background:#D9D5CD;transition:transform .3s;flex-shrink:0}
+.faq-item.open .faq-chev{transform:rotate(180deg)}
+.faq-a{padding:0 20px 16px 56px;display:none;flex-direction:column;gap:5px}
+.faq-item.open .faq-a{display:flex}
+.faq-a span{height:8px;border-radius:2px}
+.faq-a span:nth-child(1){width:100%}
+.faq-a span:nth-child(2){width:80%}
+
+/* Access */
+.access-map{height:280px;background:#D9D5CD;border-radius:6px;display:flex;align-items:center;justify-content:center}
+.access-map-icon{width:32px;height:40px;background:#C0BAB0;border-radius:4px}
+.access-info{display:flex;flex-direction:column;gap:16px}
+.access-row{display:flex;gap:12px}
+.access-label{width:56px;height:9px;flex-shrink:0;border-radius:2px;margin-top:1px}
+.access-val{display:flex;flex-direction:column;gap:5px;flex:1}
+.access-val span{height:9px;border-radius:2px}
+.access-val span:nth-child(1){width:100%}
+.access-val span:nth-child(2){width:70%}
+
+/* Final CTA */
+.final-cta{background:#C8C3B9;padding:72px 80px;text-align:center}
+.final-cta-inner{max-width:580px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:16px}
+.final-h2{display:flex;flex-direction:column;gap:8px;width:100%;align-items:center}
+.final-h2 span{height:32px;border-radius:3px}
+.final-h2 span:first-child{width:60%}
+.final-sub{display:flex;flex-direction:column;gap:5px;width:100%;align-items:center}
+.final-sub span{height:9px;border-radius:2px}
+.final-sub span:nth-child(1){width:90%}
+.final-sub span:nth-child(2){width:70%}
+.final-btns{display:flex;gap:12px;margin-top:8px;flex-wrap:wrap;justify-content:center}
+.final-btn-a{height:48px;width:180px;background:#1a1a1a;border-radius:4px}
+.final-btn-b{height:48px;width:160px;border:1.5px solid #1a1a1a;border-radius:4px}
+.final-btn-c{height:48px;width:120px;border:1.5px solid #1a1a1a;border-radius:4px}
+.final-tel{display:flex;flex-direction:column;gap:5px;align-items:center;margin-top:4px}
+.final-tel span{height:9px;border-radius:2px}
+.final-tel span:first-child{width:80px}
+.final-tel span:last-child{width:140px}
+
+/* Footer */
+.ftr{display:flex;align-items:center;justify-content:space-between;padding:28px 80px;background:#F2EFE9;border-top:1px solid #D9D5CD}
+.ftr-logo{width:120px;height:14px;display:block}
+.ftr-links{display:flex;gap:24px;align-items:center}
+.ftr-links a{text-decoration:none}
+.ftr-links span{width:80px;height:9px;display:block}
+.ftr-copy{width:180px;height:9px;background:#C0BAB0}
+
+/* SP Fixed CTA */
+.sp-cta-bar{background:#F2EFE9;border-top:1.5px solid #C8C3B9;padding:10px 16px;display:none;position:fixed;bottom:0;left:0;right:0;z-index:100}
+.sp-cta-row{display:flex;gap:8px;margin-bottom:6px}
+.sp-cta-line{flex:1;height:40px;background:#1a1a1a;border-radius:4px}
+.sp-cta-reserve{flex:1;height:40px;background:#D9D5CD;border-radius:4px}
+.sp-cta-tel{text-align:center;height:9px;background:#C0BAB0;width:140px;margin:0 auto;border-radius:2px}
+
+/* Scroll animation */
+.fade-in{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease}
+.fade-in.visible{opacity:1;transform:none}
+
+/* ── Added sections (content from design_sample_2) ── */
+
+/* Strengths（選ばれる理由） */
+.strength-list{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.strength-item{background:#fff;border-radius:6px;padding:28px 22px;border:1px solid #D9D5CD;display:flex;flex-direction:column;gap:8px}
+.strength-num{font-size:10px;color:#999;letter-spacing:.1em}
+.strength-ttl{font-size:15px;font-weight:500;color:#1a1a1a;line-height:1.45;margin-top:2px}
+.strength-body{font-size:13px;color:#666;line-height:1.85}
+
+/* Two Lights（2つの灯） */
+.tl-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.tl-card{background:#fff;border-radius:6px;overflow:hidden;border:1px solid #D9D5CD}
+.tl-img{height:180px;background:#D9D5CD;position:relative}
+.tl-img-icon{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:40px;height:40px;background:#C0BAB0;border-radius:50%}
+.tl-num{font-size:11px;color:#fff;background:rgba(26,26,26,.4);padding:2px 8px;border-radius:2px;position:absolute;top:12px;left:12px}
+.tl-badge{font-size:13px;font-weight:500;color:#fff;background:rgba(26,26,26,.5);padding:4px 10px;border-radius:3px;position:absolute;top:36px;left:12px}
+.tl-body{padding:20px 22px;display:flex;flex-direction:column;gap:6px}
+.tl-kicker{font-size:10px;color:#999;letter-spacing:.08em}
+.tl-ttl{font-size:15px;font-weight:500;color:#1a1a1a;line-height:1.5}
+.tl-desc{font-size:13px;color:#666;line-height:1.85;margin-top:2px}
+.tl-link{font-size:12px;color:#1a1a1a;text-decoration:underline;text-underline-offset:3px;display:inline-block;margin-top:4px}
+.tl-soon{font-size:12px;color:#999;margin-top:4px}
+
+/* Record（過去の講座実績） */
+.record-list{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.record-card{background:#fff;border-radius:6px;padding:22px;border:1px solid #D9D5CD;display:flex;flex-direction:column;gap:8px}
+.record-num{font-size:10px;color:#999;letter-spacing:.08em}
+.record-ttl{font-size:15px;font-weight:500;color:#1a1a1a}
+.record-meta{border-top:1px solid #D9D5CD;border-bottom:1px solid #D9D5CD;padding:10px 0;margin:2px 0;display:flex;flex-direction:column;gap:5px}
+.record-meta-row{display:flex;gap:10px;align-items:flex-start}
+.record-meta-k{font-size:9px;color:#999;letter-spacing:.06em;width:44px;flex-shrink:0;margin-top:2px}
+.record-meta-v{font-size:12px;color:#555}
+.record-desc{font-size:13px;color:#666;line-height:1.8}
+
+/* Teacher（講師紹介） */
+.teacher-list{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.teacher-card{display:flex;flex-direction:column;gap:10px}
+.teacher-img-ph{height:200px;background:#D9D5CD;border-radius:6px}
+.teacher-role-txt{font-size:10px;color:#999;letter-spacing:.06em;margin-top:2px}
+.teacher-name-txt{font-size:16px;font-weight:500;color:#1a1a1a}
+.teacher-bio-txt{font-size:13px;color:#666;line-height:1.85;margin-top:2px}
+
+/* Support（卒業後のサポート） */
+.support-rows{display:flex;flex-direction:column;gap:48px}
+.support-row-item{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.support-img-ph{height:220px;background:#D9D5CD;border-radius:6px}
+.support-text-col{display:flex;flex-direction:column;gap:10px}
+.support-sub-label{font-size:10px;color:#999;letter-spacing:.1em}
+.support-ttl{font-size:17px;font-weight:500;color:#1a1a1a;line-height:1.5}
+.support-body-txt{font-size:13px;color:#666;line-height:1.85}
+.support-link{font-size:12px;color:#1a1a1a;text-decoration:underline;text-underline-offset:3px;display:inline-block;margin-top:4px}
+
+/* Facility（施設案内） */
+.facility-wrap{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.facility-img-ph{height:260px;background:#D9D5CD;border-radius:6px}
+.facility-rows{display:flex;flex-direction:column;gap:12px}
+.facility-row-item{display:flex;gap:14px;padding-bottom:12px;border-bottom:1px solid #D9D5CD;align-items:flex-start}
+.facility-row-item:last-child{border-bottom:none;padding-bottom:0}
+.facility-k{font-size:10px;color:#999;letter-spacing:.08em;width:48px;flex-shrink:0;margin-top:2px}
+.facility-v{font-size:13px;color:#555;line-height:1.6}
+
+/* Trial（体験・説明会） */
+.trial-sec{background:#C8C3B9;padding:72px 80px;text-align:center;border-bottom:1px dashed #C0BAB0}
+.trial-inner{max-width:600px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:18px}
+.trial-sub-lbl{font-size:11px;color:#666;letter-spacing:.08em}
+.trial-h2{font-size:clamp(20px,2.5vw,30px);font-weight:500;color:#1a1a1a}
+.trial-lead{font-size:13px;color:#555;line-height:1.85;max-width:480px;text-align:center}
+.trial-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:4px}
+.trial-btn-fill{height:48px;padding:0 28px;border-radius:4px;background:#1a1a1a;color:#fff;font-size:13px;font-weight:500;text-decoration:none;display:flex;align-items:center}
+.trial-btn-out{height:48px;padding:0 28px;border-radius:4px;border:1.5px solid #1a1a1a;background:transparent;color:#1a1a1a;font-size:13px;font-weight:500;text-decoration:none;display:flex;align-items:center}
+.trial-campaign{background:rgba(255,255,255,.6);border-radius:8px;padding:14px 28px;display:flex;flex-direction:column;align-items:center;gap:4px}
+.trial-campaign-tag{font-size:10px;color:#888;letter-spacing:.08em}
+.trial-campaign-main{font-size:18px;font-weight:600;color:#1a1a1a}
+.trial-campaign-sub{font-size:11px;color:#888}
+
+/* Ambiance（雰囲気帯） */
+.ambiance-band{height:200px;background:#C8C3B9;display:flex;align-items:center;justify-content:center}
+.ambiance-ph-icon{width:48px;height:48px;background:#B8B3A9;border-radius:50%}
+
+/* ── Media Queries ── */
+@media(max-width:768px){
+  .hdr{padding:0 16px;height:52px}
+  .hdr-nav,.hdr-tel,.btn-solid{display:none}
+  .hdr-menu{display:flex}
+  .hero{grid-template-columns:1fr;height:auto}
+  .hero-right{display:none}
+  .hero-left{padding:40px 20px 36px}
+  .hero-h1 span{height:28px}
+  .hero-badges{grid-template-columns:repeat(2,1fr)}
+  .hero-btn-a,.hero-btn-b{flex:1;width:auto}
+  .sec{padding:44px 20px}
+  .sec.narrow{padding:32px 20px}
+  .row-2{grid-template-columns:1fr;gap:20px}
+  .row-3{grid-template-columns:1fr}
+  .row-4{grid-template-columns:repeat(2,1fr);gap:12px}
+  .ok-banner{flex-direction:column;padding:28px 20px;gap:20px}
+  .ok-img{width:100%;height:140px}
+  .final-cta{padding:48px 20px}
+  .final-btns{flex-direction:column;width:100%}
+  .final-btn-a,.final-btn-b,.final-btn-c{width:100%;height:44px}
+  .ftr{flex-direction:column;gap:14px;padding:24px 20px;text-align:center}
+  .ftr-links{flex-wrap:wrap;justify-content:center;gap:12px}
+  .sp-cta-bar{display:block}
+  body{padding-bottom:72px}
+  /* Added sections SP */
+  .strength-list{grid-template-columns:1fr}
+  .tl-grid{grid-template-columns:1fr}
+  .record-list{grid-template-columns:1fr}
+  .teacher-list{grid-template-columns:1fr}
+  .support-row-item{grid-template-columns:1fr;gap:20px}
+  .support-row-item.rev .support-img-ph{order:-1}
+  .facility-wrap{grid-template-columns:1fr;gap:20px}
+  .trial-sec{padding:48px 20px}
+  .trial-btns{flex-direction:column;width:100%}
+  .trial-btn-fill,.trial-btn-out{width:100%;justify-content:center}
+}
+
+/* ── Heading alignment ── */
+.sec h1,.sec h2,.sec h3{text-align:center}
+.row-2 h2,.ok-banner h3{text-align:left}
+
+/* ── Paragraph alignment ── */
+.sec p,.sec-sub,.sec-sub span{text-align:center}
+.worry-card p,.voice-card p,.course-card p,.access-info p,
+.ok-banner p,#philosophy p,
+.strength-item p,.record-card p,.teacher-card p,
+.tl-body p,.faq-q p,.faq-a p{text-align:left}
+</style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<header class="hdr">
+  <a href="index.html" class="hdr-logo">
+    <div class="ph hdr-logo-badge"></div>
+    <span style="font-size:12px;font-weight:500;color:#1a1a1a;letter-spacing:.04em;white-space:nowrap;height:auto;background:none">TOMOS</span>
+  </a>
+  <nav class="hdr-nav">
+    <a href="course.html" style="text-decoration:none;font-size:12px;color:#555;letter-spacing:.03em">講座案内</a>
+    <a href="#philosophy" style="text-decoration:none;font-size:12px;color:#555;letter-spacing:.03em">コンセプト</a>
+    <a href="#teacher" style="text-decoration:none;font-size:12px;color:#555;letter-spacing:.03em">講師紹介</a>
+    <a href="#access" style="text-decoration:none;font-size:12px;color:#555;letter-spacing:.03em">アクセス</a>
+    <a href="#faq" style="text-decoration:none;font-size:12px;color:#555;letter-spacing:.03em">よくある質問</a>
+  </nav>
+  <div class="hdr-right">
+    <div class="hdr-tel">
+      <span class="ph"></span>
+      <small class="ph"></small>
+    </div>
+    <div class="btn-solid" style="cursor:pointer"><span style="font-size:12px;color:#fff;font-weight:500;height:auto;background:none">無料相談する</span></div>
+  </div>
+  <button class="hdr-menu" id="menuBtn" aria-label="メニューを開く">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<!-- Nav overlay + drawer -->
+<div class="nav-overlay" id="navOverlay"></div>
+<div class="nav-drawer" id="navDrawer">
+  <button class="nav-drawer-close" id="drawerClose" aria-label="閉じる"></button>
+  <a href="course.html" class="nav-drawer-item" style="text-decoration:none">講座案内</a>
+  <a href="#philosophy" class="nav-drawer-item" style="text-decoration:none">コンセプト</a>
+  <a href="#teacher" class="nav-drawer-item" style="text-decoration:none">講師紹介</a>
+  <a href="#access" class="nav-drawer-item" style="text-decoration:none">アクセス</a>
+  <a href="#faq" class="nav-drawer-item" style="text-decoration:none">よくある質問</a>
+</div>
+
+<!-- ── 01 Hero ── -->
+<section class="hero">
+  <div class="hero-left">
+    <p style="font-size:10px;color:rgba(26,26,26,.5);letter-spacing:.14em;text-transform:uppercase;height:auto;background:none;margin-bottom:12px">TOMOS Therapist School &amp; Creative / Okinawa</p>
+    <div class="hero-h1">
+      <h1 style="font-size:clamp(22px,2.8vw,34px);font-weight:600;color:#1a1a1a;line-height:1.35;height:auto;background:none;margin:0">技術は、思いやりを<br>届けるための手段。</h1>
+    </div>
+    <div class="hero-sub">
+      <p style="font-size:13px;color:#444;line-height:1.8;height:auto;background:none;margin:0">解剖学×心遣いで、安心を届けるセラピストへ。<br>少人数制で、あなたのペースに寄り添います。</p>
+    </div>
+    <div class="hero-btns">
+      <a href="#" class="hero-btn-a" style="text-decoration:none;font-size:12px;color:#fff;font-weight:500;display:flex;align-items:center;justify-content:center">無料個別相談を申し込む</a>
+      <a href="course.html" class="hero-btn-b" style="text-decoration:none;font-size:12px;color:#1a1a1a;font-weight:500;display:flex;align-items:center;justify-content:center">講座を見る</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-img-icon"></div>
+    <p style="font-size:11px;color:#888;text-align:center;height:auto;background:none">スクール内の様子</p>
+  </div>
+</section>
+
+<!-- ── 02 実績・信頼 ── -->
+<section class="sec narrow fade-in" style="background:#D9D5CD">
+  <div class="sec-tag">実績・信頼</div>
+  <div class="row-4">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px;background:#fff;border-radius:6px">
+      <p style="font-size:22px;font-weight:600;color:#1a1a1a">100%</p>
+      <p style="font-size:11px;color:#666;text-align:center;line-height:1.5">指導はすべて<br>現役セラピスト</p>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px;background:#fff;border-radius:6px">
+      <p style="font-size:22px;font-weight:600;color:#1a1a1a">定員6名</p>
+      <p style="font-size:11px;color:#666;text-align:center;line-height:1.5">目が届く<br>少人数制クラス</p>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px;background:#fff;border-radius:6px">
+      <p style="font-size:22px;font-weight:600;color:#1a1a1a">2つの灯</p>
+      <p style="font-size:11px;color:#666;text-align:center;line-height:1.5">学び×発信の<br>両輪サポート</p>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px;background:#fff;border-radius:6px">
+      <p style="font-size:22px;font-weight:600;color:#1a1a1a">∞</p>
+      <p style="font-size:11px;color:#666;text-align:center;line-height:1.5">卒業後も続く<br>伴走サポート</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 03 悩みへの共感 ── -->
+<section class="sec fade-in">
+  <div class="sec-tag">03 こんな悩みありませんか？</div>
+  <div class="sec-head">
+    <p style="font-size:10px;color:#888;letter-spacing:.12em;text-transform:uppercase;height:auto;background:none">For Therapists</p>
+    <div class="sec-h2"><h2 style="font-size:clamp(18px,2vw,26px);font-weight:500;color:#1a1a1a;line-height:1.4;height:auto;background:none;margin:0">伸び悩みを感じている<br>セラピストへ</h2></div>
+    <div class="sec-sub"><p style="font-size:13px;color:#555;line-height:1.75;height:auto;background:none;margin:0">技術はあるのに、なぜか前に進めない。<br>そのもどかしさに、TOMOSが寄り添います。</p></div>
+  </div>
+  <div class="row-2">
+    <div class="worry-card">
+      <div class="worry-icon"></div>
+      <div class="worry-text">
+        <p style="font-size:14px;font-weight:500;color:#1a1a1a;line-height:1.5;height:auto;background:none">技術に自信がない・<br>何を学べばいいかわからない</p>
+        <p style="font-size:12px;color:#888;margin-top:6px;height:auto;background:none">→ 解剖学ベースで「なぜ」から理解できます</p>
+      </div>
+    </div>
+    <div class="worry-card">
+      <div class="worry-icon"></div>
+      <div class="worry-text">
+        <p style="font-size:14px;font-weight:500;color:#1a1a1a;line-height:1.5;height:auto;background:none">指名・リピートが<br>なかなか取れない</p>
+        <p style="font-size:12px;color:#888;margin-top:6px;height:auto;background:none">→ カウンセリング力と施術の説得力を磨きます</p>
+      </div>
+    </div>
+    <div class="worry-card">
+      <div class="worry-icon"></div>
+      <div class="worry-text">
+        <p style="font-size:14px;font-weight:500;color:#1a1a1a;line-height:1.5;height:auto;background:none">感覚頼みの施術に<br>限界を感じている</p>
+        <p style="font-size:12px;color:#888;margin-top:6px;height:auto;background:none">→ 根拠ある技術で自信を取り戻しましょう</p>
+      </div>
+    </div>
+    <div class="worry-card">
+      <div class="worry-icon"></div>
+      <div class="worry-text">
+        <p style="font-size:14px;font-weight:500;color:#1a1a1a;line-height:1.5;height:auto;background:none">マニュアルがないと<br>不安・応用が利かない</p>
+        <p style="font-size:12px;color:#888;margin-top:6px;height:auto;background:none">→ オーダーメイドの判断力が身につきます</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 04 他校との違い ── -->
+<section class="sec fade-in" style="background:#D9D5CD">
+  <div class="sec-tag">04 他校との違い（比較表）</div>
+  <div class="sec-head">
+    <p style="font-size:10px;color:#888;letter-spacing:.12em;text-transform:uppercase;height:auto;background:none">Comparison</p>
+    <div class="sec-h2"><h2 style="font-size:clamp(18px,2vw,26px);font-weight:500;color:#1a1a1a;line-height:1.4;height:auto;background:none;margin:0">TOMOSと他スクールの違い</h2></div>
+  </div>
+  <div style="background:#fff;border-radius:6px;border:1px solid #C8C3B9;overflow:hidden">
+    <div style="display:grid;grid-template-columns:1.2fr 1fr 1fr;background:#C8C3B9;padding:12px 20px;gap:20px">
+      <p style="font-size:11px;font-weight:500;color:#555;height:auto;background:none">比較項目</p>
+      <p style="font-size:11px;font-weight:500;color:#555;height:auto;background:none">一般スクール</p>
+      <p style="font-size:11px;font-weight:600;color:#1a1a1a;height:auto;background:none">TOMOS</p>
+    </div>
+    <div style="display:grid;grid-template-columns:1.2fr 1fr 1fr;padding:14px 20px;gap:20px;border-bottom:1px solid #D9D5CD">
+      <p style="font-size:12px;color:#555;height:auto;background:none">指導スタイル</p>
+      <p style="font-size:12px;color:#888;height:auto;background:none">マニュアルの再現</p>
+      <p style="font-size:12px;font-weight:500;color:#1a1a1a;height:auto;background:none">自ら考え最適なアプローチを導く</p>
+    </div>
+    <div style="display:grid;grid-template-columns:1.2fr 1fr 1fr;padding:14px 20px;gap:20px;border-bottom:1px solid #D9D5CD;background:#F2EFE9">
+      <p style="font-size:12px;color:#555;height:auto;background:none">施術スタイル</p>
+      <p style="font-size:12px;color:#888;height:auto;background:none">誰にでも同じ作業</p>
+      <p style="font-size:12px;font-weight:500;color:#1a1a1a;height:auto;background:none">お客様の状態に合わせたオーダーメイド</p>
+    </div>
+    <div style="display:grid;grid-template-columns:1.2fr 1fr 1fr;padding:14px 20px;gap:20px;border-bottom:1px solid #D9D5CD">
+      <p style="font-size:12px;color:#555;height:auto;background:none">知識の習得</p>
+      <p style="font-size:12px;color:#888;height:auto;background:none">テキストの暗記</p>
+      <p style="font-size:12px;font-weight:500;color:#1a1a1a;height:auto;background:none">技術と直結した解剖生理学</p>
+    </div>
+    <div style="display:grid;grid-template-columns:1.2fr 1fr 1fr;padding:14px 20px;gap:20px;background:#F2EFE9">
+      <p style="font-size:12px;color:#555;height:auto;background:none">卒業後のサポート</p>
+      <p style="font-size:12px;color:#888;height:auto;background:none">基本的にサポートなし</p>
+      <p style="font-size:12px;font-weight:500;color:#1a1a1a;height:auto;background:none">伴走サポートで継続的に支援</p>
+    </div>
+  </div>
+  <div style="display:flex;justify-content:center;margin-top:24px">
+    <a href="course.html" style="height:40px;width:220px;border:1.5px solid #1a1a1a;border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:12px;color:#1a1a1a">詳しい講座内容を見る →</a>
+  </div>
+</section>
+
+<!-- ── STRENGTHS（選ばれる理由・3つの強み）── -->
+<section class="sec fade-in">
+  <div class="sec-tag">TOMOSが選ばれる理由</div>
+  <div class="sec-head">
+    <div style="font-size:13px;color:#666;line-height:1.85;max-width:540px;margin-top:4px">技術は"ゴール"ではなく"手段"。確かな根拠と、心の通った施術。その両方を大切に育てます。</div>
+  </div>
+  <div class="strength-list">
+    <div class="strength-item">
+      <p class="strength-num">REASON 01</p>
+      <p class="strength-ttl">解剖学 × 思いやり</p>
+      <p class="strength-body">身体の確かな仕組みを理解したうえで、心の通った施術を。知識と感覚の両輪で、自信を持って触れられるセラピストを育てます。</p>
+    </div>
+    <div class="strength-item">
+      <p class="strength-num">REASON 02</p>
+      <p class="strength-ttl">マニュアルを超える応用力</p>
+      <p class="strength-body">決まった型をなぞるだけでは終わらない。お客さま一人ひとりに最適な「答え」を導き出す、判断力と応用力が身につきます。</p>
+    </div>
+    <div class="strength-item">
+      <p class="strength-num">REASON 03</p>
+      <p class="strength-ttl">技術の先の「発信」まで</p>
+      <p class="strength-body">学んだ価値を、必要な人へ届ける。SNS・動画編集まで、"伝わる"発信を現役セラピストがそばで伴走します。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 05 理念・想い ── -->
+<section class="sec fade-in" id="philosophy">
+  <div class="sec-tag">05 スクール理念・想い</div>
+  <div class="row-2" style="align-items:center">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="sec-h2"><h2 style="font-size:clamp(18px,2vw,26px);font-weight:500;color:#1a1a1a;line-height:1.4;height:auto;background:none;margin:0">マニュアルを超えた、<br>あり方を磨く場所。</h2></div>
+      <div class="sec-sub"><p style="font-size:13px;color:#555;line-height:1.8;height:auto;background:none;margin:0">知識という盾を持ち、愛を持って触れる。<br>お客様一人ひとりに最適なアプローチを、<br>自ら考え導けるセラピストを育てます。</p></div>
+      <div style="border-left:3px solid #C0BAB0;padding-left:16px;margin-top:8px">
+        <p style="font-size:13px;color:#555;line-height:1.85;height:auto;background:none">「技術は、思いやりを届けるための手段」という信念のもと、解剖生理学の確かな知識と、人への深い心遣いを両立したセラピストを。一生愛され続ける、本物の施術家を育てることがTOMOSの使命です。</p>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;margin-top:8px">
+        <div class="ph" style="width:48px;height:48px;border-radius:50%"></div>
+        <div style="display:flex;flex-direction:column;gap:5px">
+          <p style="font-size:13px;font-weight:500;color:#1a1a1a;height:auto;background:none">金城 理沙</p>
+          <p style="font-size:11px;color:#888;height:auto;background:none">スクール代表 / セラピスト育成講師</p>
+        </div>
+      </div>
+    </div>
+    <div class="ph" style="height:280px;border-radius:6px"></div>
+  </div>
+</section>
+
+<!-- ── TOMOSに込めた想い ── -->
+<section class="sec fade-in" style="text-align:center">
+  <div class="sec-tag">TOMOSに込めた想い</div>
+  <div style="max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:20px">
+    <p style="font-size:clamp(18px,2vw,24px);font-weight:500;color:#1a1a1a;line-height:1.6;">『TOMOS』に込めた想い</p>
+    <p style="font-size:14px;color:#555;line-height:2;letter-spacing:.06em;">知識を灯す　／　技術を灯す　／　想いを灯す</p>
+    <p style="font-size:13px;color:#555;line-height:1.9;">そして、あなた自身の手に、自信とあたたかさの光を灯す。<br>そんな場所でありたいという願いを込めています。</p>
+    <hr style="border:none;border-top:1px solid #D9D5CD;margin:4px 0">
+    <p style="font-size:13px;color:#555;line-height:1.9;">私たちが伝えたいのは、テクニックだけではなく「心と手のつながり」です。</p>
+    <p style="font-size:13px;color:#555;line-height:1.9;">この新しい名前とともに、これから出会うみなさんにも、すでに出会えたみなさんにも、もっと"届く"スクールでありたいと思っています。</p>
+
+  </div>
+</section>
+
+<!-- ── TEACHER（講師紹介）── -->
+<section class="sec fade-in" style="background:#D9D5CD" id="teacher">
+  <div class="sec-tag">講師紹介</div>
+  <div class="sec-head">
+    <div class="sec-h2"><h2 style="font-size:clamp(18px,2vw,26px);font-weight:500;color:#1a1a1a;line-height:1.4;height:auto;background:none;margin:0">あなたのそばで、一緒に考える講師陣。</h2></div>
+    <div class="sec-sub"><p style="font-size:13px;color:#555;line-height:1.75;height:auto;background:none;margin:0">現役セラピストとして第一線で活躍しながら、次世代の育成に取り組んでいます。<br>技術だけでなく、「在り方」まで伝えます。</p></div>
+  </div>
+  <div class="teacher-list">
+    <div class="teacher-card fade-in">
+      <div class="teacher-img-ph"></div>
+      <p class="teacher-role-txt">セラピスト育成講師</p>
+      <p class="teacher-name-txt">金城 理沙</p>
+      <p class="teacher-bio-txt">リラクゼーションセラピストのための解剖学をベースに「知識と感覚」をつなぎ、今ある技術を最大限に活かす力を育てます。マニュアルを超え、一人ひとりのお客さまに最適な「答え」を導き出す視点と技術をお伝えします。</p>
+    </div>
+    <div class="teacher-card fade-in">
+      <div class="teacher-img-ph"></div>
+      <p class="teacher-role-txt">運営・発信サポート</p>
+      <p class="teacher-name-txt">真栄田 沙耶</p>
+      <p class="teacher-bio-txt">「想いだけでは届かない」という壁。私自身が試行錯誤して身につけた「伝わる発信力」。SNSを通じて、あなたの個性が輝く場所を一緒に創り上げましょう。</p>
+    </div>
+    <div class="teacher-card fade-in">
+      <div class="teacher-img-ph"></div>
+      <p class="teacher-role-txt">資料監修・外部講師</p>
+      <p class="teacher-name-txt">金城 大輝</p>
+      <p class="teacher-bio-txt">治療家の視点から、正しい解剖学とリスク管理を徹底監修。確かな根拠という土台があるからこそ、「思いやり」は最大限に輝きます。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── TWO LIGHTS（2つの灯・サービス）── -->
+<section class="sec fade-in">
+  <div class="sec-tag">2つの灯（ともしび）</div>
+  <div class="sec-head">
+    <div class="sec-h2"><h2 style="font-size:clamp(18px,2vw,26px);font-weight:500;color:#1a1a1a;line-height:1.4;height:auto;background:none;margin:0">学び、そして届ける。<br>TOMOSの2つの灯。</h2></div>
+    <div class="sec-sub"><p style="font-size:13px;color:#555;line-height:1.75;height:auto;background:none;margin:0">セラピスト育成「Learn」と、発信・動画編集サポート「Support」。<br>技術を磨き、世界に届けるための2つの柱です。</p></div>
+  </div>
+  <div class="tl-grid">
+    <div class="tl-card">
+      <div class="tl-img">
+        <div class="tl-img-icon"></div>
+        <span class="tl-num">灯 01</span>
+        <span class="tl-badge">Learn</span>
+      </div>
+      <div class="tl-body">
+        <p class="tl-kicker">LEARN ／ セラピスト育成</p>
+        <p class="tl-ttl">技術は、思いやりを届けるための手段。</p>
+        <p class="tl-desc">解剖学 × 心地よさと思いやりで、自信を持って触れられるセラピストへ。今ある技術を最大限に活かす力を育てます。</p>
+        <a class="tl-link" href="course.html">詳しくはこちら →</a>
+      </div>
+    </div>
+    <div class="tl-card">
+      <div class="tl-img">
+        <div class="tl-img-icon"></div>
+        <span class="tl-num">灯 02</span>
+        <span class="tl-badge">Support</span>
+      </div>
+      <div class="tl-body">
+        <p class="tl-kicker">SUPPORT ／ 動画編集・発信サポート</p>
+        <p class="tl-ttl">伝えたいのに、形にならない。</p>
+        <p class="tl-desc">そんなもどかしさを、確かな形に。現役セラピストによる動画編集サポートで、あなたの「伝わる発信力」を後押しします。</p>
+        <span class="tl-soon">coming soon...</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 06 講座紹介ティザー ── -->
+<section class="sec fade-in" style="background:#D9D5CD">
+  <div class="sec-tag">06 講座紹介ティザー</div>
+  <div class="sec-head">
+    <p style="font-size:10px;color:#888;letter-spacing:.12em;text-transform:uppercase;height:auto;background:none">Course</p>
+    <div class="sec-h2"><h2 style="font-size:clamp(18px,2vw,26px);font-weight:500;color:#1a1a1a;line-height:1.4;height:auto;background:none;margin:0">あなたに合った講座を探す</h2></div>
+  </div>
+  <div class="row-3">
+    <div class="course-card">
+      <div class="course-tag-ph" style="display:flex;align-items:center;padding:0 14px"><span style="font-size:10px;color:#fff;font-weight:500;background:none;height:auto">本講座</span></div>
+      <div class="course-body">
+        <div class="course-ttl"><span style="font-size:14px;font-weight:500;color:#1a1a1a;height:auto;background:none;display:block">オイルトリートメント本講座</span></div>
+        <div class="course-desc"><p style="font-size:12px;color:#555;line-height:1.75;height:auto;background:none">解剖学に基づくオイルトリートメントの技術を体系的に習得。お客様一人ひとりに合わせた施術力を身につけます。</p></div>
+        <div class="course-price"><div class="label" style="font-size:10px;color:#888;height:auto;background:none">受講料</div><div class="val ph-dark"></div></div>
+        <a href="course_details.html" class="course-btn" style="display:flex;align-items:center;justify-content:center;font-size:12px;color:#1a1a1a;text-decoration:none">詳細を見る →</a>
+      </div>
+    </div>
+    <div class="course-card">
+      <div class="course-tag-ph" style="display:flex;align-items:center;padding:0 14px"><span style="font-size:10px;color:#fff;font-weight:500;background:none;height:auto">本講座</span></div>
+      <div class="course-body">
+        <div class="course-ttl"><span style="font-size:14px;font-weight:500;color:#1a1a1a;height:auto;background:none;display:block">ドライボディケア本講座</span></div>
+        <div class="course-desc"><p style="font-size:12px;color:#555;line-height:1.75;height:auto;background:none">オイルを使わないドライ施術に特化。触診・体表解剖学をベースに、確かな手技と判断力を育てます。</p></div>
+        <div class="course-price"><div class="label" style="font-size:10px;color:#888;height:auto;background:none">受講料</div><div class="val ph-dark"></div></div>
+        <a href="course_details.html" class="course-btn" style="display:flex;align-items:center;justify-content:center;font-size:12px;color:#1a1a1a;text-decoration:none">詳細を見る →</a>
+      </div>
+    </div>
+    <div class="course-card">
+      <div class="course-tag-ph" style="display:flex;align-items:center;padding:0 14px"><span style="font-size:10px;color:#fff;font-weight:500;background:none;height:auto">単発講座</span></div>
+      <div class="course-body">
+        <div class="course-ttl"><span style="font-size:14px;font-weight:500;color:#1a1a1a;height:auto;background:none;display:block">短期集中・単発講座</span></div>
+        <div class="course-desc"><p style="font-size:12px;color:#555;line-height:1.75;height:auto;background:none">特定のテーマを深く学ぶ単発・短期集中型。触診・カウンセリング・解剖学など、必要なスキルをピンポイントで。</p></div>
+        <div class="course-price"><div class="label" style="font-size:10px;color:#888;height:auto;background:none">受講料</div><div class="val ph-dark"></div></div>
+        <a href="course_details.html" class="course-btn" style="display:flex;align-items:center;justify-content:center;font-size:12px;color:#1a1a1a;text-decoration:none">詳細を見る →</a>
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:32px;display:flex;justify-content:center">
+    <a href="course.html" class="trial-btn-out">講座一覧を見る</a>
+  </div>
+</section>
+
+<!-- ── RECORD（過去の講座実績）── -->
+<section class="sec fade-in">
+  <div class="sec-tag">過去の講座実績</div>
+  <div class="sec-head">
+    <div class="sec-h2"><h2 style="font-size:clamp(18px,2vw,26px);font-weight:500;color:#1a1a1a;line-height:1.4;height:auto;background:none;margin:0">これまでに開催した講座の一部</h2></div>
+    <div class="sec-sub"><p style="font-size:13px;color:#555;line-height:1.75;height:auto;background:none;margin:0">基礎から応用まで、多様なニーズに応える講座を届けてきました。</p></div>
+  </div>
+  <div class="record-list">
+    <div class="record-card">
+      <p class="record-num">RECORD 01</p>
+      <p class="record-ttl">ボディケア基礎講座</p>
+      <div class="record-meta">
+        <div class="record-meta-row"><span class="record-meta-k">FORM</span><span class="record-meta-v">オンライン＋対面実技</span></div>
+        <div class="record-meta-row"><span class="record-meta-k">CLASS</span><span class="record-meta-v">少人数制（定員6名）</span></div>
+      </div>
+      <p class="record-desc">解剖学の基礎から手技の組み立てまで。からだの仕組みを理解し、施術の確かな土台をつくる入門講座。</p>
+    </div>
+    <div class="record-card">
+      <p class="record-num">RECORD 02</p>
+      <p class="record-ttl">体表解剖学・触診講座</p>
+      <div class="record-meta">
+        <div class="record-meta-row"><span class="record-meta-k">FORM</span><span class="record-meta-v">対面</span></div>
+        <div class="record-meta-row"><span class="record-meta-k">FOR</span><span class="record-meta-v">施術歴1〜3年目以降</span></div>
+      </div>
+      <p class="record-desc">触診の精度を高め、施術内容を自分で組み立てられるように。カウンセリングの説得力も育てます。</p>
+    </div>
+    <div class="record-card">
+      <p class="record-num">RECORD 03</p>
+      <p class="record-ttl">カウンセリング講座</p>
+      <div class="record-meta">
+        <div class="record-meta-row"><span class="record-meta-k">FORM</span><span class="record-meta-v">オンライン</span></div>
+        <div class="record-meta-row"><span class="record-meta-k">THEME</span><span class="record-meta-v">聴く力・在り方</span></div>
+      </div>
+      <p class="record-desc">「安心できる空間」を言葉と表情でつくる力を。お客さまの本音やニーズを引き出す聴き方を学びます。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 07 受講者の声 ── -->
+<section class="sec fade-in">
+  <div class="sec-tag">07 受講者の声</div>
+  <div class="sec-head">
+    <p style="font-size:10px;color:#888;letter-spacing:.12em;text-transform:uppercase;height:auto;background:none">Voice</p>
+    <div class="sec-h2"><h2 style="font-size:clamp(18px,2vw,26px);font-weight:500;color:#1a1a1a;line-height:1.4;height:auto;background:none;margin:0">受講生の声</h2></div>
+    <div class="sec-sub"><p style="font-size:13px;color:#555;line-height:1.75;height:auto;background:none;margin:0">実際にTOMOSで学んだ方々の声をご紹介します。</p></div>
+  </div>
+  <div class="row-3">
+    <div class="voice-card">
+      <div class="voice-quote"></div>
+      <div class="voice-tag-ph" style="display:flex;align-items:center;padding:0 10px"><span style="font-size:10px;color:#fff;font-weight:500;background:none;height:auto">本講座</span></div>
+      <div class="voice-text">
+        <p style="font-size:13px;color:#444;line-height:1.85;height:auto;background:none">説明がとても丁寧で、解剖学が初めての私にもわかりやすく理解できました。「なぜこの手技なのか」が腑に落ちて、施術に自信が持てるようになりました。</p>
+      </div>
+      <div class="voice-person">
+        <div class="voice-avatar"></div>
+        <div class="voice-info"><p style="font-size:13px;font-weight:500;color:#1a1a1a;height:auto;background:none">M.K さん / 30代</p><small style="font-size:11px;color:#888;height:auto;background:none">オイルトリートメント本講座 受講</small></div>
+      </div>
+    </div>
+    <div class="voice-card">
+      <div class="voice-quote"></div>
+      <div class="voice-tag-ph" style="display:flex;align-items:center;padding:0 10px"><span style="font-size:10px;color:#fff;font-weight:500;background:none;height:auto">本講座</span></div>
+      <div class="voice-text">
+        <p style="font-size:13px;color:#444;line-height:1.85;height:auto;background:none">少人数制なので質問しやすく、自分のペースで進められました。卒業後も先生に相談できる環境があり、安心して前に進めています。</p>
+      </div>
+      <div class="voice-person">
+        <div class="voice-avatar"></div>
+        <div class="voice-info"><p style="font-size:13px;font-weight:500;color:#1a1a1a;height:auto;background:none">Y.S さん / 40代</p><small style="font-size:11px;color:#888;height:auto;background:none">ドライボディケア本講座 受講</small></div>
+      </div>
+    </div>
+    <div class="voice-card">
+      <div class="voice-quote"></div>
+      <div class="voice-tag-ph" style="display:flex;align-items:center;padding:0 10px"><span style="font-size:10px;color:#fff;font-weight:500;background:none;height:auto">単発講座</span></div>
+      <div class="voice-text">
+        <p style="font-size:13px;color:#444;line-height:1.85;height:auto;background:none">アットホームな雰囲気で、緊張せずに学べました。技術だけでなく「在り方」まで教わり、お客さまとの関係がガラリと変わりました。</p>
+      </div>
+      <div class="voice-person">
+        <div class="voice-avatar"></div>
+        <div class="voice-info"><p style="font-size:13px;font-weight:500;color:#1a1a1a;height:auto;background:none">A.T さん / 20代</p><small style="font-size:11px;color:#888;height:auto;background:none">カウンセリング講座 受講</small></div>
+      </div>
+    </div>
+  </div>
+  <div style="display:flex;justify-content:center;margin-top:24px">
+    <a href="#" style="height:40px;width:200px;border:1.5px solid #1a1a1a;border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:12px;color:#1a1a1a">受講生の声をもっと見る →</a>
+  </div>
+</section>
+
+
+<!-- ── 08 Instagram ── -->
+<section class="sec fade-in" style="background:#D9D5CD">
+  <div class="sec-tag">08 Instagram（厳選固定表示）</div>
+  <div class="sec-head">
+    <p style="font-size:10px;color:#888;letter-spacing:.12em;text-transform:uppercase;height:auto;background:none">Instagram</p>
+    <div class="sec-h2"><h2 style="font-size:clamp(16px,1.8vw,22px);font-weight:500;color:#1a1a1a;line-height:1.4;height:auto;background:none;margin:0">@tomos.therapistschool</h2></div>
+    <div class="sec-sub"><p style="font-size:13px;color:#555;line-height:1.75;height:auto;background:none;margin:0">日々の授業の様子や、セラピストに役立つ情報を発信中。</p></div>
+  </div>
+  <div class="ig-grid">
+    <div class="ig-cell"><div class="ig-cell-icon"></div></div>
+    <div class="ig-cell"><div class="ig-cell-icon"></div></div>
+    <div class="ig-cell"><div class="ig-cell-icon"></div></div>
+    <div class="ig-cell"><div class="ig-cell-icon"></div></div>
+    <div class="ig-cell"><div class="ig-cell-icon"></div></div>
+    <div class="ig-cell"><div class="ig-cell-icon"></div></div>
+    <div class="ig-cell"><div class="ig-cell-icon"></div></div>
+    <div class="ig-cell"><div class="ig-cell-icon"></div></div>
+  </div>
+  <div class="ig-btn">
+    <div class="ph" style="width:16px;height:16px;border-radius:3px"></div>
+    <span style="font-size:12px;color:#1a1a1a;height:auto;background:none">Instagramをフォローする</span>
+  </div>
+</section>
+
+<!-- ── 09 沖縄発バナー ── -->
+<section class="sec fade-in">
+  <div class="sec-tag">09「沖縄発」世界観バナー</div>
+  <div class="ok-banner">
+    <div class="ok-text">
+      <h3 style="font-size:clamp(16px,1.8vw,22px);font-weight:500;color:#1a1a1a;line-height:1.4;height:auto;background:none">沖縄から、本物の技術を。</h3>
+      <div style="display:flex;flex-direction:column;gap:6px;margin-top:10px">
+        <p style="font-size:13px;color:#555;line-height:1.7;height:auto;background:none">沖縄・那覇発のセラピストスクール。</p>
+        <p style="font-size:13px;color:#555;line-height:1.7;height:auto;background:none">解剖学をベースに、心地よい施術の本質を伝えます。</p>
+        <p style="font-size:13px;color:#555;line-height:1.7;height:auto;background:none">あなたのセラピスト人生を、一歩先へ。</p>
+      </div>
+      <div style="display:flex;gap:16px;margin-top:16px">
+        <a href="course.html" style="font-size:12px;color:#1a1a1a;text-decoration:underline;text-underline-offset:3px;height:auto;background:none">講座案内</a>
+        <a href="#access" style="font-size:12px;color:#1a1a1a;text-decoration:underline;text-underline-offset:3px;height:auto;background:none">アクセス</a>
+        <a href="#" style="font-size:12px;color:#1a1a1a;text-decoration:underline;text-underline-offset:3px;height:auto;background:none">お問い合わせ</a>
+      </div>
+    </div>
+    <div class="ok-img"></div>
+  </div>
+</section>
+
+<!-- ── 10 FAQ ── -->
+<section class="sec fade-in" style="background:#D9D5CD" id="faq">
+  <div class="sec-tag">10 よくある質問（FAQ）</div>
+  <div class="sec-head">
+    <p style="font-size:10px;color:#888;letter-spacing:.12em;text-transform:uppercase;height:auto;background:none">FAQ</p>
+    <div class="sec-h2"><h2 style="font-size:clamp(18px,2vw,26px);font-weight:500;color:#1a1a1a;line-height:1.4;height:auto;background:none;margin:0">よくある質問</h2></div>
+    <div class="sec-sub"><p style="font-size:13px;color:#555;line-height:1.75;height:auto;background:none;margin:0">よく寄せられるご質問をまとめました。<br>その他のご質問はお気軽にご相談ください。</p></div>
+  </div>
+  <div>
+    <div class="faq-item open">
+      <div class="faq-q"><div class="faq-q-icon"></div><p style="font-size:13px;color:#1a1a1a;flex:1;height:auto;background:none;margin:0">未経験でも受講できますか？</p><div class="faq-chev"></div></div>
+      <div class="faq-a"><p style="font-size:13px;color:#555;line-height:1.8;height:auto;background:none">はい。解剖学の基礎からていねいに学べるカリキュラムを用意しています。施術が初めての方も、ご自身のペースで一歩ずつ進めていただけます。まずはお気軽にご相談ください。</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><div class="faq-q-icon"></div><p style="font-size:13px;color:#1a1a1a;flex:1;height:auto;background:none;margin:0">仕事や育児と両立できますか？</p><div class="faq-chev"></div></div>
+      <div class="faq-a"><p style="font-size:13px;color:#555;line-height:1.8;height:auto;background:none">座学はオンライン中心、実技は少人数制で日程を調整しています。ライフスタイルに合わせた受講を大切にしているので、まずは個別相談でご相談ください。</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><div class="faq-q-icon"></div><p style="font-size:13px;color:#1a1a1a;flex:1;height:auto;background:none;margin:0">費用はどのくらいかかりますか？</p><div class="faq-chev"></div></div>
+      <div class="faq-a"><p style="font-size:13px;color:#555;line-height:1.8;height:auto;background:none">コースによって異なります。詳細は無料個別相談・体験レッスンの際にご案内いたします。体験当日のお申し込みで入学金が10%OFFになるキャンペーンもご用意しています。</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><div class="faq-q-icon"></div><p style="font-size:13px;color:#1a1a1a;flex:1;height:auto;background:none;margin:0">オンラインだけで完結しますか？</p><div class="faq-chev"></div></div>
+      <div class="faq-a"><p style="font-size:13px;color:#555;line-height:1.8;height:auto;background:none">座学はオンラインで受講できますが、手技を身につける実技は対面での実習を大切にしています。那覇市銘苅のスクールにてご受講いただきます。</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><div class="faq-q-icon"></div><p style="font-size:13px;color:#1a1a1a;flex:1;height:auto;background:none;margin:0">卒業後のサポートはありますか？</p><div class="faq-chev"></div></div>
+      <div class="faq-a"><p style="font-size:13px;color:#555;line-height:1.8;height:auto;background:none">はい。開業・集客のご相談から、SNS・動画編集など「発信」のサポートまで。卒業して終わりではなく、その先もずっと伴走します。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 11 アクセス ── -->
+<section class="sec fade-in" id="access">
+  <div class="sec-tag">11 アクセス・スクール概要</div>
+  <div class="sec-head">
+    <p style="font-size:10px;color:#888;letter-spacing:.12em;text-transform:uppercase;height:auto;background:none">Access</p>
+    <div class="sec-h2"><h2 style="font-size:clamp(18px,2vw,26px);font-weight:500;color:#1a1a1a;line-height:1.4;height:auto;background:none;margin:0">アクセス・スクール概要</h2></div>
+  </div>
+  <div class="row-2">
+    <div class="access-map"><div class="access-map-icon"></div></div>
+    <div class="access-info">
+      <div class="access-row">
+        <p style="font-size:10px;color:#888;letter-spacing:.08em;width:52px;flex-shrink:0;height:auto;background:none">ADDRESS</p>
+        <div class="access-val"><p style="font-size:13px;color:#333;line-height:1.6;height:auto;background:none">沖縄県那覇市銘苅1-1-12<br>グランツK那覇202</p></div>
+      </div>
+      <div class="access-row">
+        <p style="font-size:10px;color:#888;letter-spacing:.08em;width:52px;flex-shrink:0;height:auto;background:none">EMAIL</p>
+        <div class="access-val"><p style="font-size:13px;color:#333;height:auto;background:none">tomos.therapistschool@gmail.com</p></div>
+      </div>
+      <div class="access-row">
+        <p style="font-size:10px;color:#888;letter-spacing:.08em;width:52px;flex-shrink:0;height:auto;background:none">TEL</p>
+        <div class="access-val"><span class="ph"></span></div>
+      </div>
+      <div class="access-row">
+        <p style="font-size:10px;color:#888;letter-spacing:.08em;width:52px;flex-shrink:0;height:auto;background:none">OPEN</p>
+        <div class="access-val"><p style="font-size:13px;color:#333;height:auto;background:none">10:00〜18:00（不定休）</p></div>
+      </div>
+      <div class="access-row">
+        <p style="font-size:10px;color:#888;letter-spacing:.08em;width:52px;flex-shrink:0;height:auto;background:none">CLASS</p>
+        <div class="access-val"><p style="font-size:13px;color:#333;height:auto;background:none">少人数制（定員6名）</p></div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
+        <span style="font-size:11px;color:#555;border:1px solid #C8C3B9;border-radius:14px;padding:4px 12px;height:auto;background:none">少人数制</span>
+        <span style="font-size:11px;color:#555;border:1px solid #C8C3B9;border-radius:14px;padding:4px 12px;height:auto;background:none">座学はオンライン可</span>
+        <span style="font-size:11px;color:#555;border:1px solid #C8C3B9;border-radius:14px;padding:4px 12px;height:auto;background:none">対面実技あり</span>
+      </div>
+      <a href="https://maps.google.com" target="_blank" rel="noopener" style="height:40px;width:180px;background:#1a1a1a;border-radius:4px;margin-top:8px;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:12px;color:#fff">地図で見る →</a>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- ── AMBIANCE（雰囲気画像帯）── -->
+<div class="ambiance-band">
+  <div class="ambiance-ph-icon"></div>
+</div>
+
+<!-- ── 最終CTA ── -->
+<div class="final-cta fade-in">
+  <div class="final-cta-inner">
+    <div class="final-h2">
+      <h2 style="font-size:clamp(18px,2.2vw,28px);font-weight:500;color:#1a1a1a;line-height:1.4;height:auto;background:none;margin:0">あなたのセラピスト人生を、<br>一緒に前へ。</h2>
+    </div>
+    <div class="final-sub">
+      <p style="font-size:13px;color:#555;line-height:1.8;height:auto;background:none;margin:0">まずは無料個別相談で、お気軽にご相談ください。<br>あなたの悩みに、TOMOSが丁寧に向き合います。</p>
+    </div>
+    <div class="final-btns">
+      <a href="#" class="final-btn-a" style="text-decoration:none;font-size:13px;color:#fff;font-weight:500;display:flex;align-items:center;justify-content:center">無料個別相談を申し込む</a>
+      <a href="#" class="final-btn-b" style="text-decoration:none;font-size:13px;color:#1a1a1a;font-weight:500;display:flex;align-items:center;justify-content:center">LINEで相談する</a>
+      <a href="#" class="final-btn-c" style="text-decoration:none;font-size:13px;color:#1a1a1a;display:flex;align-items:center;justify-content:center">体験・説明会を見る</a>
+    </div>
+    <div class="final-tel">
+      <span class="ph"></span><span class="ph"></span>
+    </div>
+  </div>
+</div>
+
+<!-- ── Footer ── -->
+<footer class="ftr">
+  <a href="index.html" style="text-decoration:none"><div class="ph-dark ftr-logo"></div></a>
+  <div class="ftr-links">
+    <a href="course.html" style="font-size:12px;color:#555;text-decoration:none">講座案内</a>
+    <a href="#teacher" style="font-size:12px;color:#555;text-decoration:none">講師紹介</a>
+    <a href="#" style="font-size:12px;color:#555;text-decoration:none">受講生の声</a>
+    <a href="#access" style="font-size:12px;color:#555;text-decoration:none">アクセス</a>
+    <a href="#faq" style="font-size:12px;color:#555;text-decoration:none">よくある質問</a>
+  </div>
+  <p style="font-size:11px;color:#888;height:auto;background:none">© 2025 TOMOS Therapist School &amp; Creative</p>
+</footer>
+
+<!-- SP Fixed CTA -->
+<div class="sp-cta-bar">
+  <div class="sp-cta-row">
+    <a href="#" class="sp-cta-line" style="text-decoration:none;font-size:12px;color:#1a1a1a;display:flex;align-items:center;justify-content:center">LINEで相談</a>
+    <a href="#" class="sp-cta-reserve" style="text-decoration:none;font-size:12px;color:#fff;font-weight:500;display:flex;align-items:center;justify-content:center">無料相談を申し込む</a>
+  </div>
+  <div class="sp-cta-tel"></div>
+</div>
+
+<script>
+// Hamburger menu
+const menuBtn = document.getElementById('menuBtn');
+const navDrawer = document.getElementById('navDrawer');
+const navOverlay = document.getElementById('navOverlay');
+const drawerClose = document.getElementById('drawerClose');
+
+function openMenu() {
+  navDrawer.classList.add('open');
+  navOverlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeMenu() {
+  navDrawer.classList.remove('open');
+  navOverlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+menuBtn.addEventListener('click', openMenu);
+navOverlay.addEventListener('click', closeMenu);
+drawerClose.addEventListener('click', closeMenu);
+
+// FAQ accordion
+document.querySelectorAll('.faq-q').forEach(q => {
+  q.addEventListener('click', () => {
+    q.parentElement.classList.toggle('open');
+  });
+});
+
+// Scroll fade-in
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

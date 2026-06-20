@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>講座詳細 | TOMOS セラピストスクール</title>
+<style>
+/* ── index.html ベース CSS ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:#F2EFE9;font-family:'Helvetica Neue',Arial,sans-serif;color:#1a1a1a}
+.ph{background:#D9D5CD;border-radius:3px}
+.ph-dark{background:#C8C3B9;border-radius:3px}
+.sec{padding:56px 80px;border-bottom:1px dashed #C0BAB0}
+.sec.narrow{padding:40px 80px}
+.sec-tag{display:inline-block;font-size:10px;background:#C8C3B9;color:#555;padding:3px 10px;border-radius:3px;margin-bottom:14px;letter-spacing:.06em}
+.hdr{display:flex;align-items:center;justify-content:space-between;padding:0 80px;height:68px;background:#F2EFE9;border-bottom:1px solid #D9D5CD;position:sticky;top:0;z-index:100}
+.hdr-logo{display:flex;flex-direction:column;gap:3px;text-decoration:none}
+.hdr-logo-badge{width:100px;height:8px}
+.hdr-nav{display:flex;gap:28px;align-items:center}
+.hdr-right{display:flex;align-items:center;gap:16px}
+.hdr-tel{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+.hdr-tel span{width:100px;height:9px;display:block}
+.hdr-tel small{width:70px;height:7px;display:block}
+.btn-solid{height:36px;border-radius:4px;background:#1a1a1a;display:flex;align-items:center;justify-content:center;padding:0 16px}
+.btn-solid span{width:100px;height:10px;background:#fff;border-radius:2px}
+.hdr-menu{display:none;flex-direction:column;justify-content:space-between;width:28px;height:20px;cursor:pointer;background:none;border:none;padding:2px 0}
+.hdr-menu span{display:block;width:100%;height:2px;background:#1a1a1a;border-radius:2px;transition:all .3s}
+.nav-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:150}
+.nav-overlay.open{display:block}
+.nav-drawer{position:fixed;top:0;right:-300px;width:280px;height:100%;background:#F2EFE9;z-index:200;transition:right .3s ease;padding:72px 24px 24px;display:flex;flex-direction:column;gap:20px;border-left:1px solid #D9D5CD}
+.nav-drawer.open{right:0}
+.nav-drawer-close{position:absolute;top:20px;right:20px;width:28px;height:28px;border:none;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.nav-drawer-close::before,.nav-drawer-close::after{content:'';position:absolute;width:18px;height:2px;background:#1a1a1a;border-radius:2px}
+.nav-drawer-close::before{transform:rotate(45deg)}
+.nav-drawer-close::after{transform:rotate(-45deg)}
+.nav-drawer-item{height:10px;border-radius:2px;background:#D9D5CD;display:block}
+.row-2{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+.row-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.row-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.sec-head{display:flex;flex-direction:column;gap:8px;margin-bottom:36px}
+.faq-item{background:#fff;border-radius:6px;border:1px solid #D9D5CD;overflow:hidden;margin-bottom:8px}
+.faq-q{display:flex;align-items:center;gap:12px;padding:16px 20px;cursor:pointer;user-select:none}
+.faq-q-icon{width:24px;height:24px;border-radius:50%;background:#1a1a1a;flex-shrink:0}
+.faq-q-text{flex:1;height:10px;border-radius:2px}
+.faq-chev{width:16px;height:16px;border-radius:2px;background:#D9D5CD;transition:transform .3s;flex-shrink:0}
+.faq-item.open .faq-chev{transform:rotate(180deg)}
+.faq-a{padding:0 20px 16px 56px;display:none;flex-direction:column;gap:5px}
+.faq-item.open .faq-a{display:flex}
+.faq-a span{height:8px;border-radius:2px}
+.ftr{display:flex;align-items:center;justify-content:space-between;padding:28px 80px;background:#F2EFE9;border-top:1px solid #D9D5CD}
+.ftr-logo{width:120px;height:14px;display:block}
+.ftr-links{display:flex;gap:24px;align-items:center}
+.ftr-links a{text-decoration:none}
+.ftr-copy{width:180px;height:9px;background:#C0BAB0}
+.sp-cta-bar{background:#F2EFE9;border-top:1.5px solid #C8C3B9;padding:10px 16px;display:none;position:fixed;bottom:0;left:0;right:0;z-index:100}
+.sp-cta-row{display:flex;gap:8px;margin-bottom:6px}
+.sp-cta-line{flex:1;height:40px;background:#1a1a1a;border-radius:4px}
+.sp-cta-reserve{flex:1;height:40px;background:#D9D5CD;border-radius:4px}
+.sp-cta-tel{text-align:center;height:9px;background:#C0BAB0;width:140px;margin:0 auto;border-radius:2px}
+.fade-in{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease}
+.fade-in.visible{opacity:1;transform:none}
+
+/* ── Course Details 固有スタイル ── */
+.bg-soft{background:#F8F7F4}
+.bg-mid{background:#D9D5CD}
+
+/* Real-text section heading */
+.cd-shead{display:flex;flex-direction:column;gap:10px;margin-bottom:48px}
+.cd-shead.center{align-items:center;text-align:center}
+.cd-eyebrow{font-size:12px;font-weight:700;letter-spacing:.2em;color:#8f8f96}
+.cd-h2{font-size:clamp(20px,2.2vw,28px);font-weight:700;letter-spacing:.04em;color:#1a1a1a;line-height:1.45;margin:0}
+.cd-lead{font-size:14px;font-weight:500;color:#6c6c73;letter-spacing:.03em;line-height:1.85;margin:0;max-width:560px}
+.cd-shead.center .cd-lead{text-align:center}
+.row-2 .cd-lead{text-align:left}
+
+/* Anchor bar */
+.cd-anchor{position:sticky;top:68px;z-index:90;background:#fafafa;border-bottom:1px solid #D9D5CD;display:flex;align-items:center;overflow-x:auto}
+.cd-anchor-item{padding:0 20px;height:48px;display:flex;align-items:center;font-size:12px;color:#888;text-decoration:none;white-space:nowrap;border-bottom:2px solid transparent;letter-spacing:.04em;flex-shrink:0;transition:.15s}
+.cd-anchor-item:hover{color:#1a1a1a;border-bottom-color:#C8C3B9}
+
+/* FV */
+.cd-fv{background:#C8C3B9;padding:72px 80px;display:grid;grid-template-columns:0.84fr 1.16fr;gap:64px;align-items:center;border-bottom:1px dashed #C0BAB0}
+.cd-fv-img{height:440px;background:#B8B3A9;border-radius:6px;border:1px dashed #A8A3A0;display:flex;align-items:center;justify-content:center}
+.cd-fv-cta{display:flex;align-items:center;gap:20px;margin-top:28px;flex-wrap:wrap}
+
+/* Check cards */
+.cd-check-list{display:flex;flex-direction:column;gap:16px}
+.cd-check-card{display:flex;gap:18px;align-items:flex-start;background:#fff;border:1px solid #D9D5CD;border-radius:6px;padding:22px 24px}
+.cd-check-ic{width:30px;height:30px;min-width:30px;border-radius:50%;background:#1a1a1a;flex-shrink:0;margin-top:2px}
+.cd-check-body{flex:1;display:flex;flex-direction:column;gap:11px}
+.cd-check-link{display:flex;align-items:center;gap:10px;margin-top:4px}
+.cd-check-link-ic{width:18px;height:18px;min-width:18px;border-radius:50%;background:#C8C3B9;flex-shrink:0}
+
+/* BEFORE/AFTER */
+.cd-ba{display:grid;grid-template-columns:1fr 64px 1fr;align-items:stretch}
+.cd-ba-col{border-radius:6px;padding:32px 28px;display:flex;flex-direction:column;gap:20px}
+.cd-ba-before{background:#e6e6e9}
+.cd-ba-after{background:#fff;border:1px solid #D9D5CD;position:relative}
+.cd-ba-after::before{content:'';position:absolute;left:0;top:18px;bottom:18px;width:4px;background:#1a1a1a;border-radius:4px}
+.cd-ba-arrow{display:flex;align-items:center;justify-content:center}
+.cd-ba-arrow svg{width:30px;height:30px;color:#C8C3B9}
+.cd-ba-row{display:flex;align-items:center;gap:14px}
+.cd-ba-ic{width:24px;height:24px;min-width:24px;border-radius:50%;flex-shrink:0}
+.cd-ba-before .cd-ba-ic{background:#C8C3B9}
+.cd-ba-after .cd-ba-ic{background:#1a1a1a}
+.cd-ba-head{margin-bottom:6px}
+.cd-ba-tag{font-size:10px;font-weight:700;letter-spacing:.16em;color:#8a8a90;border:1px solid #C8C3B9;border-radius:4px;padding:3px 8px;display:inline-block}
+.cd-ba-after .cd-ba-tag{color:#1a1a1a;border-color:#1a1a1a}
+
+/* Curriculum */
+.cd-tabs{display:flex;gap:10px;justify-content:center;margin-bottom:36px}
+.cd-tab{border:1.5px solid #D9D5CD;background:#fff;border-radius:999px;padding:12px 32px;cursor:pointer;display:flex;align-items:center;gap:10px;font-family:inherit;font-size:14px;transition:.2s}
+.cd-tab.active{background:#1a1a1a;border-color:#1a1a1a}
+.cd-tab-bar{width:80px;height:11px;border-radius:5px;background:#D9D5CD;display:block}
+.cd-tab.active .cd-tab-bar{background:rgba(255,255,255,.8)}
+.tabpanel{display:none}
+.tabpanel.active{display:block}
+.cur-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.cur-card{background:#fff;border:1px solid #D9D5CD;border-radius:6px;padding:24px 22px;display:flex;flex-direction:column;gap:12px;min-height:200px}
+.cur-num{width:34px;height:34px;min-width:34px;border-radius:50%;background:#1a1a1a;flex-shrink:0}
+.cur-hidden{display:none}
+.cur-more{display:flex;justify-content:center;margin-top:24px}
+.more-btn{border:1.5px solid #D9D5CD;background:#fff;border-radius:999px;padding:12px 28px;cursor:pointer;display:flex;align-items:center;gap:10px;font-family:inherit;transition:.2s}
+.more-btn:hover{background:#F8F7F4}
+.more-btn svg{width:14px;height:14px;color:#B8B3A9}
+
+/* Price */
+.cd-price-table{background:#fff;border:1px solid #D9D5CD;border-radius:6px;overflow:hidden}
+.cd-price-row{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;padding:20px 24px;border-bottom:1px solid #D9D5CD}
+.cd-price-row:last-child{border-bottom:none;background:#F8F7F4}
+
+/* Voice */
+.cd-voice-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.cd-vcard{background:#fff;border:1px solid #D9D5CD;border-radius:6px;padding:28px 24px;display:flex;flex-direction:column;gap:16px}
+.cd-vbadge{align-self:flex-start;height:22px;width:110px;border-radius:6px;background:#E8E6E2;display:block}
+.cd-vquote{font-size:44px;line-height:.6;color:#D9D5CD;font-family:Georgia,serif}
+.cd-vsep{height:1px;background:#D9D5CD;margin:4px 0}
+.cd-vperson{display:flex;align-items:center;gap:12px}
+.cd-v-avatar{width:44px;height:44px;min-width:44px;border-radius:50%;background:#D9D5CD;border:1px dashed #C0BAB0;flex-shrink:0}
+.cd-vmeta{display:flex;flex-direction:column;gap:7px;flex:1}
+
+/* Teacher */
+.cd-teacher-grid{display:grid;grid-template-columns:0.84fr 1.16fr;gap:64px;align-items:center}
+.cd-teacher-img{height:460px;background:#D9D5CD;border-radius:6px;border:1px dashed #C0BAB0;display:flex;align-items:center;justify-content:center}
+.cd-t-creds{display:flex;flex-direction:column;gap:12px;margin:6px 0}
+.cd-t-cred{display:flex;align-items:center;gap:12px}
+.cd-t-cred-ic{width:16px;height:16px;min-width:16px;border-radius:50%;background:#C8C3B9;flex-shrink:0}
+.cd-t-msg{border-left:4px solid #1a1a1a;background:#fff;border-radius:0 6px 6px 0;padding:20px 24px;display:flex;flex-direction:column;gap:11px;margin-top:8px}
+
+/* FAQ list wrapper */
+.cd-faq-list{max-width:860px;margin:0 auto}
+
+/* Final CTA dark */
+.cd-final-sec{background:#27272b;padding:80px;border-bottom:none}
+.cd-final-inner{display:flex;flex-direction:column;align-items:center;gap:22px;text-align:center;max-width:580px;margin:0 auto}
+.cd-final-btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:8px}
+
+/* ── Media Queries ── */
+@media(max-width:768px){
+  .hdr{padding:0 16px;height:52px}
+  .hdr-nav,.hdr-tel,.btn-solid{display:none}
+  .hdr-menu{display:flex}
+  .sec{padding:44px 20px}
+  .sec.narrow{padding:32px 20px}
+  .row-2{grid-template-columns:1fr;gap:20px}
+  .row-3{grid-template-columns:1fr}
+  .row-4{grid-template-columns:repeat(2,1fr);gap:12px}
+  .ftr{flex-direction:column;gap:14px;padding:24px 20px;text-align:center}
+  .ftr-links{flex-wrap:wrap;justify-content:center;gap:12px}
+  .sp-cta-bar{display:block}
+  body{padding-bottom:72px}
+  .cd-anchor{top:52px}
+  .cd-fv{padding:44px 20px;grid-template-columns:1fr;gap:24px}
+  .cd-fv-img{height:220px;order:-1}
+  .cd-fv-cta{flex-direction:column;align-items:stretch;gap:12px}
+  .cd-ba{grid-template-columns:1fr;gap:12px}
+  .cd-ba-arrow{transform:rotate(90deg);height:32px}
+  .cd-ba-after::before{display:none}
+  .cd-tabs{flex-wrap:nowrap}
+  .cd-tab{flex:1;padding:10px 14px}
+  .cd-tab-bar{width:52px}
+  .cur-grid{grid-template-columns:1fr}
+  .cd-voice-grid{grid-template-columns:1fr}
+  .cd-teacher-grid{grid-template-columns:1fr;gap:24px}
+  .cd-teacher-img{height:220px;order:-1}
+  .cd-final-sec{padding:56px 20px}
+  .cd-final-btns{flex-direction:column;width:100%}
+  .cd-shead{margin-bottom:28px}
+}
+</style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<header class="hdr">
+  <a href="index.html" class="hdr-logo">
+    <div class="ph hdr-logo-badge"></div>
+    <span style="font-size:12px;font-weight:500;color:#1a1a1a;letter-spacing:.04em;white-space:nowrap;height:auto;background:none">TOMOS</span>
+  </a>
+  <nav class="hdr-nav">
+    <a href="index.html" style="text-decoration:none;font-size:12px;color:#555;letter-spacing:.03em">ホーム</a>
+    <a href="course.html" style="text-decoration:none;font-size:12px;color:#555;letter-spacing:.03em">講座案内</a>
+    <a href="index.html#teacher" style="text-decoration:none;font-size:12px;color:#555;letter-spacing:.03em">講師紹介</a>
+    <a href="index.html#access" style="text-decoration:none;font-size:12px;color:#555;letter-spacing:.03em">アクセス</a>
+    <a href="index.html#faq" style="text-decoration:none;font-size:12px;color:#555;letter-spacing:.03em">よくある質問</a>
+  </nav>
+  <div class="hdr-right">
+    <div class="hdr-tel">
+      <span class="ph"></span>
+      <small class="ph"></small>
+    </div>
+    <div class="btn-solid" style="cursor:pointer">
+      <span style="font-size:12px;color:#fff;font-weight:500;height:auto;background:none">無料相談する</span>
+    </div>
+  </div>
+  <button class="hdr-menu" id="menuBtn" aria-label="メニューを開く">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<!-- Nav overlay + drawer -->
+<div class="nav-overlay" id="navOverlay"></div>
+<div class="nav-drawer" id="navDrawer">
+  <button class="nav-drawer-close" id="drawerClose" aria-label="閉じる"></button>
+  <a href="index.html" class="nav-drawer-item" style="text-decoration:none;font-size:14px;color:#1a1a1a;height:auto;background:none">ホーム</a>
+  <a href="course.html" class="nav-drawer-item" style="text-decoration:none;font-size:14px;color:#1a1a1a;height:auto;background:none">講座案内</a>
+  <a href="index.html#teacher" class="nav-drawer-item" style="text-decoration:none;font-size:14px;color:#1a1a1a;height:auto;background:none">講師紹介</a>
+  <a href="index.html#access" class="nav-drawer-item" style="text-decoration:none;font-size:14px;color:#1a1a1a;height:auto;background:none">アクセス</a>
+  <a href="index.html#faq" class="nav-drawer-item" style="text-decoration:none;font-size:14px;color:#1a1a1a;height:auto;background:none">よくある質問</a>
+</div>
+
+<!-- ── アンカーバー ── -->
+<nav class="cd-anchor">
+  <a href="#features" class="cd-anchor-item">この講座の特徴</a>
+  <a href="#target" class="cd-anchor-item">こんな方に</a>
+  <a href="#curriculum" class="cd-anchor-item">カリキュラム</a>
+  <a href="#overview" class="cd-anchor-item">講座概要</a>
+  <a href="#teacher" class="cd-anchor-item">講師紹介</a>
+  <a href="#faq" class="cd-anchor-item">よくある質問</a>
+</nav>
+
+<!-- ── 01 FV ── -->
+<section class="cd-fv">
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <span class="cd-eyebrow">本講座</span>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-top:6px">
+      <span class="ph-dark" style="height:30px;width:90%;display:block;border-radius:8px"></span>
+      <span class="ph-dark" style="height:30px;width:65%;display:block;border-radius:8px"></span>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-top:10px;max-width:440px">
+      <span class="ph" style="height:13px;width:85%;display:block;border-radius:6px"></span>
+      <span class="ph" style="height:13px;width:70%;display:block;border-radius:6px"></span>
+    </div>
+    <div class="cd-fv-cta">
+      <a href="#" style="height:48px;padding:0 28px;border:1.5px solid #1a1a1a;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;font-size:14px;color:#1a1a1a;font-weight:500;background:transparent">まず相談してみる</a>
+      <button style="background:none;border:none;font-size:13px;color:#1a1a1a;text-decoration:underline;text-underline-offset:4px;cursor:pointer;font-family:inherit;padding:0">資料を見る →</button>
+    </div>
+  </div>
+  <div class="cd-fv-img">
+    <div class="ph" style="width:48px;height:48px;border-radius:50%"></div>
+  </div>
+</section>
+
+<!-- ── この講座の特徴 ── -->
+<section class="sec fade-in bg-soft" id="features">
+  <div class="cd-shead center">
+    <span class="cd-eyebrow">FEATURES</span>
+    <h2 class="cd-h2">この講座の特徴</h2>
+    <p class="cd-lead">オイルトリートメント本講座が選ばれる、3つの理由</p>
+  </div>
+  <div class="row-3">
+    <div style="background:#fff;border:1px solid #D9D5CD;border-radius:6px;padding:32px 28px;display:flex;flex-direction:column;gap:16px">
+      <span class="cd-eyebrow">01</span>
+      <h3 style="font-size:15px;font-weight:700;color:#1a1a1a;line-height:1.55;margin:0">解剖学×実技の<br>完全連動カリキュラム</h3>
+      <p style="font-size:13px;color:#555;line-height:1.85;margin:0">座学で学んだ知識をその週の実技で即実践。「わかる」が「できる」に変わるスピードが違います。</p>
+    </div>
+    <div style="background:#fff;border:1px solid #D9D5CD;border-radius:6px;padding:32px 28px;display:flex;flex-direction:column;gap:16px">
+      <span class="cd-eyebrow">02</span>
+      <h3 style="font-size:15px;font-weight:700;color:#1a1a1a;line-height:1.55;margin:0">少人数制（定員6名）だから得られる、個別フィードバック</h3>
+      <p style="font-size:13px;color:#555;line-height:1.85;margin:0">一人ひとりの施術を講師が直接確認。自分の癖や強みを把握しながら上達できます。</p>
+    </div>
+    <div style="background:#fff;border:1px solid #D9D5CD;border-radius:6px;padding:32px 28px;display:flex;flex-direction:column;gap:16px">
+      <span class="cd-eyebrow">03</span>
+      <h3 style="font-size:15px;font-weight:700;color:#1a1a1a;line-height:1.55;margin:0">卒業後も続く、<br>伴走サポート</h3>
+      <p style="font-size:13px;color:#555;line-height:1.85;margin:0">修了後もグループでの勉強会・個別相談を継続。開業・就職後の不安もTOMOSが一緒に解決します。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── オイルトリートメントとは ── -->
+<section class="sec fade-in" id="about-oil" style="background:#fff">
+  <div class="row-2" style="align-items:start">
+    <div class="cd-shead" style="margin-bottom:0">
+      <h2 class="cd-h2">オイルトリートメントとは</h2>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <p style="font-size:14px;color:#444;line-height:1.9;margin:0">オイルを使用してお客様の身体に直接触れる施術技術です。解剖学の知識をベースに、お客様一人ひとりの状態を見立て、最適なアプローチを選択する「オーダーメイドの施術力」を身につけます。</p>
+      <p style="font-size:14px;color:#444;line-height:1.9;margin:0">リラクゼーションセラピストとして、指名・リピートされ続けるための確かな技術と思いやりを同時に育てます。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── なぜ一緒に解剖学を学ぶのか ── -->
+<section class="sec fade-in bg-soft" id="why-anatomy">
+  <div class="row-2" style="align-items:start">
+    <div class="cd-shead" style="margin-bottom:0">
+      <h2 class="cd-h2">なぜ一緒に解剖学を<br>学ぶのか</h2>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <p style="font-size:14px;color:#444;line-height:1.9;margin:0">感覚だけの施術には限界があります。骨・筋肉・神経の仕組みを理解することで、お客様の状態を「見立てる力」が生まれます。TOMOSでは解剖生理学を技術と切り離さず、常に実技と連動させて学びます。</p>
+      <p style="font-size:14px;color:#444;line-height:1.9;margin:0">「なぜこのアプローチなのか」を自分の言葉で説明できるセラピストが、お客様から長く信頼され続けます。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── このような方におすすめです ── -->
+<section class="sec fade-in" id="target" style="background:#fff">
+  <div class="row-2" style="align-items:start">
+    <div class="cd-shead" style="margin-bottom:0">
+      <span class="cd-eyebrow">POINT</span>
+      <h2 class="cd-h2">このような方におすすめです</h2>
+      <p class="cd-lead">ひとつでも当てはまれば、この講座がきっとお役に立てます。</p>
+    </div>
+    <div class="cd-check-list">
+      <div class="cd-check-card">
+        <span class="cd-check-ic"></span>
+        <div class="cd-check-body">
+          <p style="font-size:14px;color:#1a1a1a;font-weight:500;line-height:1.55;margin:0">技術はあるのに、なぜか指名・リピートが取れないと悩んでいる方</p>
+        </div>
+      </div>
+      <div class="cd-check-card">
+        <span class="cd-check-ic"></span>
+        <div class="cd-check-body">
+          <p style="font-size:14px;color:#1a1a1a;font-weight:500;line-height:1.55;margin:0">感覚頼みの施術に限界を感じ、根拠のある技術を身につけたい方</p>
+        </div>
+      </div>
+      <div class="cd-check-card">
+        <span class="cd-check-ic"></span>
+        <div class="cd-check-body">
+          <p style="font-size:14px;color:#1a1a1a;font-weight:500;line-height:1.55;margin:0">解剖学を学びたいけど、どこから始めればいいかわからない方</p>
+        </div>
+      </div>
+      <div class="cd-check-card">
+        <span class="cd-check-ic"></span>
+        <div class="cd-check-body">
+          <p style="font-size:14px;color:#1a1a1a;font-weight:500;line-height:1.55;margin:0">卒業後も継続的にサポートしてくれる環境で学びたい方</p>
+        </div>
+      </div>
+      <div class="cd-check-card">
+        <span class="cd-check-ic"></span>
+        <div class="cd-check-body">
+          <p style="font-size:14px;color:#1a1a1a;font-weight:500;line-height:1.55;margin:0">独立・開業を視野に入れて、自信を持って施術できるようになりたい方</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 身につくこと（BEFORE/AFTER） ── -->
+<section class="sec fade-in bg-soft" id="result">
+  <div class="cd-shead center">
+    <span class="cd-eyebrow">RESULT</span>
+    <h2 class="cd-h2">この講座で身につくこと</h2>
+    <p class="cd-lead">受講前と受講後で、これだけの変化が生まれます。</p>
+  </div>
+  <div class="cd-ba">
+    <div class="cd-ba-col cd-ba-before">
+      <div class="cd-ba-head"><span class="cd-ba-tag">BEFORE</span></div>
+      <div class="cd-ba-row"><span class="cd-ba-ic"></span><span class="ph" style="height:12px;width:80%;display:block;border-radius:5px"></span></div>
+      <div class="cd-ba-row"><span class="cd-ba-ic"></span><span class="ph" style="height:12px;width:70%;display:block;border-radius:5px"></span></div>
+      <div class="cd-ba-row"><span class="cd-ba-ic"></span><span class="ph" style="height:12px;width:75%;display:block;border-radius:5px"></span></div>
+      <div class="cd-ba-row"><span class="cd-ba-ic"></span><span class="ph" style="height:12px;width:60%;display:block;border-radius:5px"></span></div>
+    </div>
+    <div class="cd-ba-arrow">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </div>
+    <div class="cd-ba-col cd-ba-after">
+      <div class="cd-ba-head"><span class="cd-ba-tag">AFTER</span></div>
+      <div class="cd-ba-row"><span class="cd-ba-ic"></span><span class="ph" style="height:12px;width:80%;display:block;border-radius:5px"></span></div>
+      <div class="cd-ba-row"><span class="cd-ba-ic"></span><span class="ph" style="height:12px;width:85%;display:block;border-radius:5px"></span></div>
+      <div class="cd-ba-row"><span class="cd-ba-ic"></span><span class="ph" style="height:12px;width:70%;display:block;border-radius:5px"></span></div>
+      <div class="cd-ba-row"><span class="cd-ba-ic"></span><span class="ph" style="height:12px;width:75%;display:block;border-radius:5px"></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA① ── -->
+<section class="sec narrow fade-in bg-soft" style="border-top:none">
+  <div style="display:flex;justify-content:center">
+    <a href="#" style="height:48px;padding:0 28px;border:1.5px solid #1a1a1a;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;font-size:14px;color:#1a1a1a;font-weight:500;background:transparent">まず相談してみる</a>
+  </div>
+</section>
+
+<!-- ── 04 カリキュラム ── -->
+<section class="sec fade-in" id="curriculum" style="background:#fff">
+  <div class="cd-shead center">
+    <span class="cd-eyebrow">CURRICULUM</span>
+    <h2 class="cd-h2">カリキュラム詳細</h2>
+    <p class="cd-lead">何を、どの順番で学ぶのか。すべて公開しています。</p>
+  </div>
+  <!-- 座学 -->
+  <div>
+    <h3 style="font-size:13px;font-weight:700;letter-spacing:.15em;color:#8f8f96;margin-bottom:20px">座学</h3>
+    <div style="display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap">
+      <span style="font-size:11px;color:#555;border:1px solid #D9D5CD;border-radius:3px;padding:5px 12px;background:#F2EFE9;letter-spacing:.03em">オンライン</span>
+      <span style="font-size:11px;color:#555;border:1px solid #D9D5CD;border-radius:3px;padding:5px 12px;background:#F2EFE9;letter-spacing:.03em">1講座 2時間</span>
+      <span style="font-size:11px;color:#555;border:1px solid #D9D5CD;border-radius:3px;padding:5px 12px;background:#F2EFE9;letter-spacing:.03em">計5回</span>
+    </div>
+    <p style="font-size:13px;color:#666;line-height:1.85;margin:0 0 28px">身体の構造と理解・セラピストとしての判断力と応用力を身につけます</p>
+    <div class="cur-grid">
+      <div class="cur-card">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span class="cur-num" style="display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0">1</span>
+          <span style="font-size:13px;font-weight:600;color:#1a1a1a;line-height:1.4">解剖学基礎</span>
+        </div>
+        <p style="font-size:11px;color:#999;margin:0;letter-spacing:.02em">骨の役割と筋肉の役割</p>
+        <div style="display:flex;flex-direction:column;gap:6px;flex:1">
+          <p style="font-size:12px;color:#555;margin:0;line-height:1.6">→ 骨と筋肉の役割</p>
+          <p style="font-size:12px;color:#555;margin:0;line-height:1.6">→ パーツ別解剖学基礎（骨盤と下肢編）</p>
+          <p style="font-size:12px;color:#555;margin:0;line-height:1.6">→ パーツ別解剖学基礎（上肢と体幹編）</p>
+        </div>
+      </div>
+      <div class="cur-card">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span class="cur-num" style="display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0">2</span>
+          <span style="font-size:13px;font-weight:600;color:#1a1a1a;line-height:1.4">姿勢の見立て</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;flex:1">
+          <p style="font-size:12px;color:#555;margin:0;line-height:1.6">→ 拮抗筋とは？身体の連鎖について</p>
+          <p style="font-size:12px;color:#555;margin:0;line-height:1.6">→ 症状別で観るアプローチポイント</p>
+        </div>
+      </div>
+      <div class="cur-card">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span class="cur-num" style="display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0">3</span>
+          <span style="font-size:13px;font-weight:600;color:#1a1a1a;line-height:1.4">安心して施術するための<br>リスク管理</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;flex:1">
+          <p style="font-size:12px;color:#555;margin:0;line-height:1.6">→ 症状別の判断基準</p>
+          <p style="font-size:12px;color:#555;margin:0;line-height:1.6">→ よくある疾患名や対応方法</p>
+        </div>
+      </div>
+      <div class="cur-card">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span class="cur-num" style="display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0">4</span>
+          <span style="font-size:13px;font-weight:600;color:#1a1a1a;line-height:1.4">カウンセリングスキル</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;flex:1">
+          <p style="font-size:12px;color:#555;margin:0;line-height:1.6">→ リラクゼーションセラピストとしての心得</p>
+          <p style="font-size:12px;color:#555;margin:0;line-height:1.6">→ カウンセリングシートの活用方法</p>
+          <p style="font-size:12px;color:#555;margin:0;line-height:1.6">→ 選ばれるセラピストのカウンセリング思考</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 実技 -->
+  <div style="margin-top:48px;padding-top:40px;border-top:1px dashed #D9D5CD">
+    <h3 style="font-size:13px;font-weight:700;letter-spacing:.15em;color:#8f8f96;margin-bottom:20px">実技</h3>
+    <div style="display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap">
+      <span style="font-size:11px;color:#555;border:1px solid #D9D5CD;border-radius:3px;padding:5px 12px;background:#F2EFE9;letter-spacing:.03em">オフライン</span>
+      <span style="font-size:11px;color:#555;border:1px solid #D9D5CD;border-radius:3px;padding:5px 12px;background:#F2EFE9;letter-spacing:.03em">1講座 2時間</span>
+      <span style="font-size:11px;color:#555;border:1px solid #D9D5CD;border-radius:3px;padding:5px 12px;background:#F2EFE9;letter-spacing:.03em">計9回（マスターコースは＋3回の計12回）</span>
+    </div>
+    <p style="font-size:13px;color:#666;line-height:1.85;margin:0 0 28px">学んだ知識をもとに実践に落とし込み、施術の精度を高めます</p>
+    <div class="cur-grid">
+      <div class="cur-card">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span class="cur-num" style="display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0">1</span>
+          <span style="font-size:13px;font-weight:600;color:#1a1a1a;line-height:1.4">身体のランドマークを<br>理解する</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;flex:1">
+          <p style="font-size:12px;color:#555;margin:0;line-height:1.6">→ パーツ別ランドマーク（骨盤と下肢編）</p>
+          <p style="font-size:12px;color:#555;margin:0;line-height:1.6">→ パーツ別ランドマーク（上肢と体幹編）</p>
+        </div>
+      </div>
+      <div class="cur-card">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span class="cur-num" style="display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0">2</span>
+          <span style="font-size:13px;font-weight:600;color:#1a1a1a;line-height:1.4">体表解剖学<br>（描く／観る／触れる）</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;flex:1">
+          <p style="font-size:12px;color:#555;margin:0;line-height:1.6">→ 体表解剖（表層筋編）</p>
+          <p style="font-size:12px;color:#555;margin:0;line-height:1.6">→ 体表解剖（深層筋編）</p>
+          <p style="font-size:12px;color:#555;margin:0;line-height:1.6">→ タオルワーク</p>
+          <p style="font-size:12px;color:#555;margin:0;line-height:1.6">→ 触り方、捉え方、手技の理解</p>
+        </div>
+      </div>
+      <div class="cur-card">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span class="cur-num" style="display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0">4</span>
+          <span style="font-size:13px;font-weight:600;color:#1a1a1a;line-height:1.4">コース別実技</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;flex:1">
+          <p style="font-size:12px;color:#555;margin:0;line-height:1.6">→ 下肢編</p>
+          <p style="font-size:12px;color:#555;margin:0;line-height:1.6">→ 背中と上肢編</p>
+          <p style="font-size:12px;color:#555;margin:0;line-height:1.6">→ デコルテとヘッド編</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 含まれる内容 -->
+  <div style="margin-top:48px;padding-top:36px;border-top:1px dashed #D9D5CD">
+    <h3 style="font-size:14px;font-weight:600;color:#1a1a1a;margin-bottom:16px;letter-spacing:.04em">含まれる内容</h3>
+    <div style="display:flex;flex-wrap:wrap;gap:10px">
+      <span style="font-size:12px;color:#1a1a1a;border:1px solid #C8C3B9;border-radius:4px;padding:8px 16px;background:#fff;letter-spacing:.02em">テキスト1冊（ボディナビゲーション）</span>
+      <span style="font-size:12px;color:#1a1a1a;border:1px solid #C8C3B9;border-radius:4px;padding:8px 16px;background:#fff;letter-spacing:.02em">資料一式</span>
+      <span style="font-size:12px;color:#1a1a1a;border:1px solid #C8C3B9;border-radius:4px;padding:8px 16px;background:#fff;letter-spacing:.02em">修了書発行</span>
+      <span style="font-size:12px;color:#1a1a1a;border:1px solid #C8C3B9;border-radius:4px;padding:8px 16px;background:#fff;letter-spacing:.02em">スクール生限定（単発講座特別割引）</span>
+      <span style="font-size:12px;color:#1a1a1a;border:1px solid #C8C3B9;border-radius:4px;padding:8px 16px;background:#fff;letter-spacing:.02em">動画テキスト見放題</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── 講座概要 ── -->
+<section class="sec fade-in bg-soft" id="overview">
+  <div class="row-2" style="align-items:start">
+    <div class="cd-shead" style="margin-bottom:0;gap:10px">
+      <span class="cd-eyebrow">OVERVIEW</span>
+      <h2 class="cd-h2">講座概要</h2>
+    </div>
+    <div class="cd-price-table">
+      <div class="cd-price-row" style="grid-template-columns:96px 1fr;align-items:start">
+        <span style="font-size:12px;color:#888;font-weight:500;padding-top:1px">受講期間</span>
+        <span style="font-size:14px;color:#1a1a1a;font-weight:600">約10ヶ月</span>
+      </div>
+      <div class="cd-price-row" style="grid-template-columns:96px 1fr;align-items:start">
+        <span style="font-size:12px;color:#888;font-weight:500;padding-top:4px">受講料</span>
+        <span class="ph-dark" style="height:20px;width:130px;display:block;border-radius:4px"></span>
+      </div>
+      <div class="cd-price-row" style="grid-template-columns:96px 1fr;align-items:start">
+        <span style="font-size:12px;color:#888;font-weight:500;padding-top:2px">受講条件</span>
+        <span style="font-size:13px;color:#1a1a1a;line-height:1.7">セラピストとして活動中の方、またはこれからセラピストを目指す方（未経験可）</span>
+      </div>
+      <div class="cd-price-row" style="grid-template-columns:96px 1fr;align-items:start">
+        <span style="font-size:12px;color:#888;font-weight:500;padding-top:2px">持ち物</span>
+        <span style="font-size:13px;color:#1a1a1a;line-height:1.7">動きやすい服装、フェイスタオル2枚、筆記用具</span>
+      </div>
+      <div class="cd-price-row" style="grid-template-columns:96px 1fr;align-items:start">
+        <span style="font-size:12px;color:#888;font-weight:500;padding-top:2px">開催場所</span>
+        <span style="font-size:13px;color:#1a1a1a;line-height:1.7">沖縄県那覇市銘苅1-1-12 グランツK那覇202<br><span style="font-size:12px;color:#888">（オンライン受講併用可）</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 05 料金 ── -->
+<section class="sec fade-in" id="price" style="background:#fff">
+  <div class="row-2" style="align-items:start">
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div class="cd-shead" style="margin-bottom:0;gap:10px">
+        <span class="cd-eyebrow">PRICE</span>
+        <h2 class="cd-h2">料金・お支払い方法</h2>
+        <p class="cd-lead">すべて込みの明確な料金で、無理なく続けられます。</p>
+      </div>
+      <div style="margin:8px 0 4px">
+        <span class="ph-dark" style="height:46px;width:300px;display:block;border-radius:10px"></span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:9px;max-width:300px">
+        <span class="ph" style="height:11px;width:80%;display:block;border-radius:5px"></span>
+        <span class="ph" style="height:11px;width:55%;display:block;border-radius:5px"></span>
+      </div>
+    </div>
+    <div class="cd-price-table">
+      <div class="cd-price-row">
+        <span class="ph" style="height:13px;width:120px;display:block;border-radius:6px"></span>
+        <span class="ph" style="height:14px;width:110px;display:block;border-radius:6px"></span>
+      </div>
+      <div class="cd-price-row">
+        <span class="ph" style="height:13px;width:96px;display:block;border-radius:6px"></span>
+        <span class="ph" style="height:14px;width:110px;display:block;border-radius:6px"></span>
+      </div>
+      <div class="cd-price-row">
+        <span class="ph" style="height:13px;width:108px;display:block;border-radius:6px"></span>
+        <span class="ph" style="height:14px;width:110px;display:block;border-radius:6px"></span>
+      </div>
+      <div class="cd-price-row">
+        <span class="ph-dark" style="height:16px;width:80px;display:block;border-radius:6px"></span>
+        <span class="ph-dark" style="height:20px;width:140px;display:block;border-radius:6px"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 講座日程 ── -->
+<section class="sec fade-in bg-soft" id="schedule">
+  <div class="cd-shead center">
+    <span class="cd-eyebrow">SCHEDULE</span>
+    <h2 class="cd-h2">講座日程</h2>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:center;gap:28px;text-align:center">
+    <p style="font-size:14px;color:#555;line-height:1.9;max-width:480px;margin:0">次回開催日程は個別相談にてご案内しています。<br>まずはお気軽にご相談ください。</p>
+    <a href="#" style="height:52px;padding:0 36px;background:#1a1a1a;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;font-size:14px;color:#fff;font-weight:500">日程を相談する</a>
+  </div>
+</section>
+
+<!-- ── CTA② ── -->
+<section class="sec narrow fade-in bg-mid">
+  <div style="display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center">
+    <span class="ph" style="height:12px;width:200px;display:block;border-radius:5px;background:#B8B3A9"></span>
+    <a href="#" style="height:52px;padding:0 36px;background:#1a1a1a;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;font-size:15px;color:#fff;font-weight:600">この料金で受講できるか相談する</a>
+  </div>
+</section>
+
+<!-- ── 講師紹介 ── -->
+<section class="sec fade-in bg-soft" id="teacher">
+  <div class="cd-shead center">
+    <span class="cd-eyebrow">TEACHER</span>
+    <h2 class="cd-h2">担当講師紹介</h2>
+    <p class="cd-lead">「この人から学びたい」と思える講師がいます。</p>
+  </div>
+  <!-- 金城 理沙 -->
+  <div class="cd-teacher-grid">
+    <div class="cd-teacher-img">
+      <div class="ph" style="width:40px;height:40px;border-radius:50%"></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div>
+        <p style="font-size:18px;font-weight:700;color:#1a1a1a;margin-bottom:4px;letter-spacing:.04em">金城 理沙</p>
+        <p style="font-size:12px;color:#8f8f96;letter-spacing:.08em;margin-bottom:0">セラピスト育成講師</p>
+      </div>
+      <div class="cd-t-msg">
+        <p style="font-size:13px;color:#1a1a1a;line-height:1.9;margin:0">リラクゼーションセラピストのための解剖学をベースに「知識と感覚」をつなぎ、今ある技術を最大限に活かす力を育てます。マニュアルを超え、一人ひとりのお客さまに最適な「答え」を導き出す視点と技術をお伝えします。</p>
+      </div>
+    </div>
+  </div>
+  <!-- 金城 大輝 -->
+  <div style="margin-top:56px;padding-top:48px;border-top:1px dashed #D9D5CD">
+    <div class="cd-teacher-grid">
+      <div class="cd-teacher-img" style="height:280px">
+        <div class="ph" style="width:40px;height:40px;border-radius:50%"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div>
+          <p style="font-size:18px;font-weight:700;color:#1a1a1a;margin-bottom:4px;letter-spacing:.04em">金城 大輝</p>
+          <p style="font-size:12px;color:#8f8f96;letter-spacing:.08em;margin-bottom:0">資料監修・外部講師</p>
+        </div>
+        <div class="cd-t-msg">
+          <p style="font-size:13px;color:#1a1a1a;line-height:1.9;margin:0">治療家の視点から、正しい解剖学とリスク管理を徹底監修。確かな根拠という土台があるからこそ、「思いやり」は最大限に輝きます。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 受講者の声 ── -->
+<section class="sec fade-in" id="voice" style="background:#fff">
+  <div class="cd-shead center">
+    <span class="cd-eyebrow">VOICE</span>
+    <h2 class="cd-h2">受講者の声</h2>
+    <p class="cd-lead">同じ立場から一歩を踏み出した、先輩たちの声です。</p>
+  </div>
+  <div class="cd-voice-grid">
+    <div class="cd-vcard">
+      <span class="cd-vbadge"></span>
+      <span class="cd-vquote">"</span>
+      <div style="display:flex;flex-direction:column;gap:9px;flex:1">
+        <span class="ph" style="height:9px;width:95%;display:block;border-radius:4px"></span>
+        <span class="ph" style="height:9px;width:90%;display:block;border-radius:4px"></span>
+        <span class="ph" style="height:9px;width:95%;display:block;border-radius:4px"></span>
+        <span class="ph" style="height:9px;width:70%;display:block;border-radius:4px"></span>
+      </div>
+      <div class="cd-vsep"></div>
+      <div class="cd-vperson">
+        <span class="cd-v-avatar"></span>
+        <div class="cd-vmeta">
+          <span class="ph" style="height:9px;width:60%;display:block;border-radius:4px"></span>
+          <span class="ph" style="height:8px;width:80%;display:block;border-radius:4px;background:#C0BAB0"></span>
+        </div>
+      </div>
+    </div>
+    <div class="cd-vcard">
+      <span class="cd-vbadge"></span>
+      <span class="cd-vquote">"</span>
+      <div style="display:flex;flex-direction:column;gap:9px;flex:1">
+        <span class="ph" style="height:9px;width:90%;display:block;border-radius:4px"></span>
+        <span class="ph" style="height:9px;width:95%;display:block;border-radius:4px"></span>
+        <span class="ph" style="height:9px;width:85%;display:block;border-radius:4px"></span>
+        <span class="ph" style="height:9px;width:60%;display:block;border-radius:4px"></span>
+      </div>
+      <div class="cd-vsep"></div>
+      <div class="cd-vperson">
+        <span class="cd-v-avatar"></span>
+        <div class="cd-vmeta">
+          <span class="ph" style="height:9px;width:55%;display:block;border-radius:4px"></span>
+          <span class="ph" style="height:8px;width:75%;display:block;border-radius:4px;background:#C0BAB0"></span>
+        </div>
+      </div>
+    </div>
+    <div class="cd-vcard">
+      <span class="cd-vbadge"></span>
+      <span class="cd-vquote">"</span>
+      <div style="display:flex;flex-direction:column;gap:9px;flex:1">
+        <span class="ph" style="height:9px;width:95%;display:block;border-radius:4px"></span>
+        <span class="ph" style="height:9px;width:85%;display:block;border-radius:4px"></span>
+        <span class="ph" style="height:9px;width:90%;display:block;border-radius:4px"></span>
+        <span class="ph" style="height:9px;width:65%;display:block;border-radius:4px"></span>
+      </div>
+      <div class="cd-vsep"></div>
+      <div class="cd-vperson">
+        <span class="cd-v-avatar"></span>
+        <div class="cd-vmeta">
+          <span class="ph" style="height:9px;width:60%;display:block;border-radius:4px"></span>
+          <span class="ph" style="height:8px;width:70%;display:block;border-radius:4px;background:#C0BAB0"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FAQ ── -->
+<section class="sec fade-in bg-soft" id="faq">
+  <div class="cd-shead center">
+    <span class="cd-eyebrow">FAQ</span>
+    <h2 class="cd-h2">よくある質問</h2>
+    <p class="cd-lead">お申し込み前の疑問や不安を、ここで解消できます。</p>
+  </div>
+  <div class="cd-faq-list">
+    <div class="faq-item open">
+      <div class="faq-q">
+        <span class="faq-q-icon"></span>
+        <span class="faq-q-text ph" style="width:70%"></span>
+        <span class="faq-chev"></span>
+      </div>
+      <div class="faq-a">
+        <span class="ph" style="width:90%"></span>
+        <span class="ph" style="width:75%"></span>
+      </div>
+    </div>
+    <div class="faq-item open">
+      <div class="faq-q">
+        <span class="faq-q-icon"></span>
+        <span class="faq-q-text ph" style="width:60%"></span>
+        <span class="faq-chev"></span>
+      </div>
+      <div class="faq-a">
+        <span class="ph" style="width:85%"></span>
+        <span class="ph" style="width:65%"></span>
+      </div>
+    </div>
+    <div class="faq-item open">
+      <div class="faq-q">
+        <span class="faq-q-icon"></span>
+        <span class="faq-q-text ph" style="width:75%"></span>
+        <span class="faq-chev"></span>
+      </div>
+      <div class="faq-a">
+        <span class="ph" style="width:90%"></span>
+        <span class="ph" style="width:70%"></span>
+      </div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">
+        <span class="faq-q-icon"></span>
+        <span class="faq-q-text ph" style="width:55%"></span>
+        <span class="faq-chev"></span>
+      </div>
+      <div class="faq-a">
+        <span class="ph" style="width:85%"></span>
+        <span class="ph" style="width:60%"></span>
+      </div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">
+        <span class="faq-q-icon"></span>
+        <span class="faq-q-text ph" style="width:65%"></span>
+        <span class="faq-chev"></span>
+      </div>
+      <div class="faq-a">
+        <span class="ph" style="width:80%"></span>
+        <span class="ph" style="width:55%"></span>
+      </div>
+    </div>
+  </div>
+  <div class="cur-more" style="margin-top:28px">
+    <button class="more-btn js-faqmore">
+      <span class="ph" style="height:11px;width:96px;display:block;border-radius:5px;background:#B8B3A9"></span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+  </div>
+</section>
+
+<!-- ── 最終CTA ── -->
+<section class="cd-final-sec fade-in" id="contact">
+  <div class="cd-final-inner">
+    <span style="font-size:12px;font-weight:700;letter-spacing:.2em;color:#9a9aa1">CONTACT</span>
+    <h2 style="font-size:clamp(20px,2.2vw,28px);font-weight:700;color:#fff;line-height:1.45;text-align:center;margin:0">まずは無料相談から始めましょう</h2>
+    <p style="font-size:14px;color:#b7b7be;line-height:1.85;text-align:center;max-width:460px;margin:0">あなたの状況に合わせて、最適な学び方をご提案します。</p>
+    <div class="cd-final-btns">
+      <a href="#" style="height:52px;padding:0 32px;background:#fff;border-radius:4px;color:#1a1a1a;font-size:15px;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;justify-content:center">無料相談を申し込む</a>
+      <a href="#" style="height:52px;padding:0 32px;background:#5b5b64;border-radius:4px;color:#fff;font-size:15px;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;justify-content:center">LINEで相談する</a>
+      <a href="#" style="height:52px;padding:0 32px;border:1.5px solid rgba(255,255,255,.6);border-radius:4px;background:transparent;color:#fff;font-size:14px;font-weight:500;text-decoration:none;display:inline-flex;align-items:center;justify-content:center">お電話で問い合わせる</a>
+    </div>
+    <span style="display:block;height:30px;width:240px;border-radius:6px;background:#46464c;margin-top:6px"></span>
+    <span style="display:block;height:11px;width:160px;border-radius:5px;background:#3a3a40"></span>
+  </div>
+</section>
+
+<!-- ── Footer ── -->
+<footer class="ftr">
+  <a href="index.html" style="text-decoration:none"><div class="ph-dark ftr-logo"></div></a>
+  <div class="ftr-links">
+    <a href="index.html" style="font-size:12px;color:#555;text-decoration:none">ホーム</a>
+    <a href="course.html" style="font-size:12px;color:#555;text-decoration:none">講座案内</a>
+    <a href="index.html#teacher" style="font-size:12px;color:#555;text-decoration:none">講師紹介</a>
+    <a href="index.html#access" style="font-size:12px;color:#555;text-decoration:none">アクセス</a>
+    <a href="index.html#faq" style="font-size:12px;color:#555;text-decoration:none">よくある質問</a>
+  </div>
+  <p style="font-size:11px;color:#888;height:auto;background:none">© 2025 TOMOS Therapist School &amp; Creative</p>
+</footer>
+
+<!-- SP Fixed CTA -->
+<div class="sp-cta-bar">
+  <div class="sp-cta-row">
+    <a href="#" class="sp-cta-line" style="text-decoration:none;font-size:12px;color:#fff;font-weight:500;display:flex;align-items:center;justify-content:center">LINEで相談</a>
+    <a href="#" class="sp-cta-reserve" style="text-decoration:none;font-size:12px;color:#1a1a1a;font-weight:500;display:flex;align-items:center;justify-content:center">無料相談を申し込む</a>
+  </div>
+  <div class="sp-cta-tel"></div>
+</div>
+
+<script>
+// Hamburger menu
+const menuBtn = document.getElementById('menuBtn');
+const navDrawer = document.getElementById('navDrawer');
+const navOverlay = document.getElementById('navOverlay');
+const drawerClose = document.getElementById('drawerClose');
+function openMenu(){navDrawer.classList.add('open');navOverlay.classList.add('open');document.body.style.overflow='hidden'}
+function closeMenu(){navDrawer.classList.remove('open');navOverlay.classList.remove('open');document.body.style.overflow=''}
+menuBtn.addEventListener('click',openMenu);
+navOverlay.addEventListener('click',closeMenu);
+drawerClose.addEventListener('click',closeMenu);
+
+// FAQ accordion
+document.querySelectorAll('.faq-q').forEach(q=>{
+  q.addEventListener('click',()=>q.parentElement.classList.toggle('open'));
+});
+
+// FAQ "もっと見る"
+document.querySelector('.js-faqmore')?.addEventListener('click',e=>{
+  document.querySelectorAll('.faq-item').forEach(f=>f.classList.add('open'));
+  e.target.closest('.cur-more').style.display='none';
+});
+
+// Scroll fade-in
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}});
+},{threshold:0.08});
+document.querySelectorAll('.fade-in').forEach(el=>observer.observe(el));
+</script>
+</body>
+</html>

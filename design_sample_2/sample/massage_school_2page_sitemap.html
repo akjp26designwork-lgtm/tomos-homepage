@@ -1,0 +1,300 @@
+
+<style>
+.wrap { padding: 1rem 0 2rem; font-family: var(--font-sans); }
+.page-col { display: flex; gap: 20px; justify-content: center; align-items: flex-start; }
+.page-block { flex: 1; max-width: 300px; }
+.page-title {
+  font-size: 13px; font-weight: 500;
+  text-align: center; padding: 10px 16px;
+  border-radius: var(--border-radius-md);
+  margin-bottom: 10px;
+}
+.page-title.top { background:#1B5E9B; color:#fff; }
+.page-title.course { background:#0F6E56; color:#fff; }
+
+.sec {
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-md);
+  padding: 8px 12px;
+  margin-bottom: 6px;
+  background: var(--color-background-primary);
+  cursor: pointer;
+}
+.sec:hover { background: var(--color-background-secondary); }
+.sec-head { display: flex; align-items: center; gap: 7px; margin-bottom: 3px; }
+.sec-num { font-size: 10px; font-weight: 500; color: var(--color-text-secondary); min-width: 20px; }
+.sec-name { font-size: 12px; font-weight: 500; color: var(--color-text-primary); }
+.sec-kpi {
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 10px;
+  margin-left: auto;
+  white-space: nowrap;
+}
+.kpi-access { background:#E6F1FB; color:#0C447C; }
+.kpi-trust  { background:#EEEDFE; color:#3C3489; }
+.kpi-cv     { background:#FAEEDA; color:#633806; }
+.kpi-seo    { background:#E1F5EE; color:#085041; }
+.sec-desc { font-size: 11px; color: var(--color-text-secondary); line-height: 1.5; }
+
+.divider {
+  width: 1px;
+  background: var(--color-border-tertiary);
+  align-self: stretch;
+  margin-top: 40px;
+}
+
+.legend { display:flex; gap:12px; justify-content:center; margin-top:16px; flex-wrap:wrap; }
+.leg { display:flex; align-items:center; gap:5px; font-size:10px; color:var(--color-text-secondary); }
+.dot { width:8px; height:8px; border-radius:10px; }
+
+.flow-label {
+  font-size: 10px; color: var(--color-text-secondary);
+  text-align: center; margin: 4px 0 2px;
+}
+.cta-bar {
+  background: #FAEEDA;
+  border: 0.5px solid #BA7517;
+  border-radius: var(--border-radius-md);
+  padding: 8px 12px;
+  margin-bottom: 6px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 500;
+  color: #633806;
+  cursor: pointer;
+}
+.cta-bar:hover { background: #f5e0bf; }
+.global-cta {
+  margin-top: 16px;
+  border: 0.5px solid #BA7517;
+  border-radius: var(--border-radius-md);
+  padding: 10px 16px;
+  background: #fffaf2;
+}
+.global-title { font-size: 10px; color: var(--color-text-secondary); margin-bottom: 7px; text-align: center; letter-spacing: .04em; }
+.cta-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.cta-chip {
+  font-size: 11px; padding: 5px 12px;
+  border-radius: var(--border-radius-md);
+  border: 0.5px solid #BA7517;
+  color: #633806; background: #fff;
+  cursor: pointer;
+  font-weight: 500;
+}
+.cta-chip:hover { background: #FAEEDA; }
+.arrow-right {
+  display: flex; align-items: center; justify-content: center;
+  color: var(--color-text-secondary); font-size: 18px;
+  padding-top: 36px;
+}
+</style>
+
+<div class="wrap">
+  <h2 style="position:absolute;left:-9999px">マッサージスクール 2ページ構成 サイトマップ</h2>
+
+  <div class="page-col">
+
+    <!-- ===== トップページ ===== -->
+    <div class="page-block">
+      <div class="page-title top">トップページ（HOME）</div>
+
+      <div class="sec" onclick="sendPrompt('ファーストビューに必要な要素を具体的に教えてください')">
+        <div class="sec-head">
+          <span class="sec-num">01</span>
+          <span class="sec-name">ファーストビュー（FV）</span>
+          <span class="sec-kpi kpi-cv">CV</span>
+        </div>
+        <div class="sec-desc">キャッチコピー・写真・見学会申込ボタン・電話番号</div>
+      </div>
+
+      <div class="sec" onclick="sendPrompt('数字で信頼を伝えるセクションに必要な要素を教えてください')">
+        <div class="sec-head">
+          <span class="sec-num">02</span>
+          <span class="sec-name">実績・信頼の数字</span>
+          <span class="sec-kpi kpi-trust">信頼</span>
+        </div>
+        <div class="sec-desc">創立年数・卒業生数・取得資格数などの実績バッジ</div>
+      </div>
+
+      <div class="sec" onclick="sendPrompt('なぜセラピストなのかを訴求するセクションの作り方を教えてください')">
+        <div class="sec-head">
+          <span class="sec-num">03</span>
+          <span class="sec-name">こんな悩みありませんか？</span>
+          <span class="sec-kpi kpi-trust">共感</span>
+        </div>
+        <div class="sec-desc">ターゲットの悩み・理想をチェックリスト形式で提示</div>
+      </div>
+
+      <div class="sec" onclick="sendPrompt('スクールの選ばれる理由セクションの構成を教えてください')">
+        <div class="sec-head">
+          <span class="sec-num">04</span>
+          <span class="sec-name">このスクールが選ばれる理由</span>
+          <span class="sec-kpi kpi-trust">信頼</span>
+        </div>
+        <div class="sec-desc">3つの強み（実践技術・自由な働き方・卒業後サポート）</div>
+      </div>
+
+      <div class="sec" onclick="sendPrompt('コース紹介のティザーセクションに必要な要素を教えてください')">
+        <div class="sec-head">
+          <span class="sec-num">05</span>
+          <span class="sec-name">コース紹介（ティザー）</span>
+          <span class="sec-kpi kpi-cv">誘導</span>
+        </div>
+        <div class="sec-desc">各コースのサムネイル＋特徴1行＋「詳しく見る」ボタン</div>
+      </div>
+
+      <div class="sec" onclick="sendPrompt('卒業生の声セクションの見せ方を教えてください')">
+        <div class="sec-head">
+          <span class="sec-num">06</span>
+          <span class="sec-name">卒業生の声・活躍事例</span>
+          <span class="sec-kpi kpi-trust">信頼</span>
+        </div>
+        <div class="sec-desc">顔写真・名前・受講前後の変化・ひとこと（2〜3件）</div>
+      </div>
+
+      <div class="sec" onclick="sendPrompt('講師紹介セクションに必要な要素を教えてください')">
+        <div class="sec-head">
+          <span class="sec-num">07</span>
+          <span class="sec-name">講師・スタッフ紹介</span>
+          <span class="sec-kpi kpi-trust">安心</span>
+        </div>
+        <div class="sec-desc">顔写真・名前・資格・ひとことメッセージ</div>
+      </div>
+
+      <div class="sec" onclick="sendPrompt('よくある質問セクションに載せるべき質問を教えてください')">
+        <div class="sec-head">
+          <span class="sec-num">08</span>
+          <span class="sec-name">よくある質問（FAQ）</span>
+          <span class="sec-kpi kpi-cv">不安解消</span>
+        </div>
+        <div class="sec-desc">費用・期間・未経験・仕事との両立など5〜8件</div>
+      </div>
+
+      <div class="sec" onclick="sendPrompt('アクセス・スクール概要セクションの構成を教えてください')">
+        <div class="sec-head">
+          <span class="sec-num">09</span>
+          <span class="sec-name">アクセス・スクール概要</span>
+          <span class="sec-kpi kpi-trust">信頼</span>
+        </div>
+        <div class="sec-desc">地図・住所・電話・営業時間・スクール基本情報</div>
+      </div>
+
+      <div class="cta-bar" onclick="sendPrompt('トップページ最下部のCTAセクションの設計を教えてください')">
+        最終CTA：見学会申込 ／ LINE相談 ／ 電話
+      </div>
+    </div>
+
+    <!-- 矢印 -->
+    <div class="arrow-right">→</div>
+
+    <!-- ===== 講座紹介ページ ===== -->
+    <div class="page-block">
+      <div class="page-title course">講座紹介ページ</div>
+
+      <div class="sec" onclick="sendPrompt('講座紹介ページのファーストビューに必要な要素を教えてください')">
+        <div class="sec-head">
+          <span class="sec-num">01</span>
+          <span class="sec-name">ページFV・導入文</span>
+          <span class="sec-kpi kpi-trust">共感</span>
+        </div>
+        <div class="sec-desc">「あなたに合ったコースが見つかります」訴求＋全コース概要</div>
+      </div>
+
+      <div class="sec" onclick="sendPrompt('コースの選び方ガイドセクションの作り方を教えてください')">
+        <div class="sec-head">
+          <span class="sec-num">02</span>
+          <span class="sec-name">コースの選び方ガイド</span>
+          <span class="sec-kpi kpi-cv">誘導</span>
+        </div>
+        <div class="sec-desc">目的別（就職・開業・副業）でおすすめコースを提示</div>
+      </div>
+
+      <div class="sec" onclick="sendPrompt('コースA詳細セクションに必要な情報を教えてください')">
+        <div class="sec-head">
+          <span class="sec-num">03</span>
+          <span class="sec-name">コースA 詳細</span>
+          <span class="sec-kpi kpi-cv">CV</span>
+        </div>
+        <div class="sec-desc">コース概要・学習内容・期間・取得資格・料金・申込ボタン</div>
+      </div>
+
+      <div class="sec" onclick="sendPrompt('コースB詳細セクションに必要な情報を教えてください')">
+        <div class="sec-head">
+          <span class="sec-num">04</span>
+          <span class="sec-name">コースB 詳細</span>
+          <span class="sec-kpi kpi-cv">CV</span>
+        </div>
+        <div class="sec-desc">コース概要・学習内容・期間・取得資格・料金・申込ボタン</div>
+      </div>
+
+      <div class="sec" onclick="sendPrompt('コースC詳細セクションに必要な情報を教えてください')">
+        <div class="sec-head">
+          <span class="sec-num">05</span>
+          <span class="sec-name">コースC 詳細</span>
+          <span class="sec-kpi kpi-cv">CV</span>
+        </div>
+        <div class="sec-desc">コース概要・学習内容・期間・取得資格・料金・申込ボタン</div>
+      </div>
+
+      <div class="sec" onclick="sendPrompt('受講の流れセクションに必要な要素を教えてください')">
+        <div class="sec-head">
+          <span class="sec-num">06</span>
+          <span class="sec-name">受講の流れ</span>
+          <span class="sec-kpi kpi-cv">不安解消</span>
+        </div>
+        <div class="sec-desc">見学会→入学→受講→修了→開業／就職のステップ図</div>
+      </div>
+
+      <div class="sec" onclick="sendPrompt('他校との比較表セクションの作り方を教えてください')">
+        <div class="sec-head">
+          <span class="sec-num">07</span>
+          <span class="sec-name">他校との比較表</span>
+          <span class="sec-kpi kpi-trust">信頼</span>
+        </div>
+        <div class="sec-desc">料金・期間・資格・サポート面で一般スクールと比較</div>
+      </div>
+
+      <div class="sec" onclick="sendPrompt('このコースの卒業生の声セクションの見せ方を教えてください')">
+        <div class="sec-head">
+          <span class="sec-num">08</span>
+          <span class="sec-name">このコースの卒業生の声</span>
+          <span class="sec-kpi kpi-trust">信頼</span>
+        </div>
+        <div class="sec-desc">コース別の受講者ひとこと（各コース1〜2件）</div>
+      </div>
+
+      <div class="sec" onclick="sendPrompt('講座紹介ページのFAQに載せるべき質問を教えてください')">
+        <div class="sec-head">
+          <span class="sec-num">09</span>
+          <span class="sec-name">コースに関するFAQ</span>
+          <span class="sec-kpi kpi-cv">不安解消</span>
+        </div>
+        <div class="sec-desc">費用・分割・期間・未経験・仕事との両立など</div>
+      </div>
+
+      <div class="cta-bar" onclick="sendPrompt('講座紹介ページ最下部のCTAセクションの設計を教えてください')">
+        最終CTA：無料見学会を予約する ／ LINEで相談
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 全ページ共通CTA -->
+  <div class="global-cta">
+    <div class="global-title">全ページ共通・スマホ下部固定CTA</div>
+    <div class="cta-row">
+      <div class="cta-chip" onclick="sendPrompt('スマホ固定CTAの設計を教えてください')">無料見学会を予約</div>
+      <div class="cta-chip">LINEで相談する</div>
+      <div class="cta-chip">電話（タップで発信）</div>
+    </div>
+  </div>
+
+  <!-- 凡例 -->
+  <div class="legend">
+    <div class="leg"><div class="dot" style="background:#378ADD"></div>アクセス・集客</div>
+    <div class="leg"><div class="dot" style="background:#7F77DD"></div>信頼・安心形成</div>
+    <div class="leg"><div class="dot" style="background:#BA7517"></div>CV・申込誘導</div>
+    <div class="leg"><div class="dot" style="background:#1D9E75"></div>SEO・検索流入</div>
+  </div>
+</div>
